@@ -1,1 +1,1 @@
-SECRETKEY="&waul%sv&%51it+r8jmnsg)rb(3+tl3@@yf1g_p%tfy67ea4+7"
+SECRETKEY="6@*ju)%@07_+m895bx+3-&n*dkcr3-&$wz@%eztprt!db_)yzj"
