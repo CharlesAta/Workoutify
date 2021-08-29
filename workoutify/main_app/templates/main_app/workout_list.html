@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>All Workouts</h1>
+
+{% for workout in workout_list %}
+<a href="{% url 'workouts_detail' workout.id %}">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ workout.name }}</span>
+      <p>Location: {{ workout.location }}</p>
+    </div>
+  </div>
+</a>
+{% endfor %} {% endblock %}
