@@ -9,7 +9,6 @@ autoClose: true
 let timeEl = document.getElementById('id_time');
 M.Timepicker.init(timeEl, {
 defaultTime: 'now',
-twelveHour: false
 });
 
 let schedWorkoutBtn = document.getElementById('sched-workout-btn');
