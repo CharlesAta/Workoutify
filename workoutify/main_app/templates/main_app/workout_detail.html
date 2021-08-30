@@ -55,7 +55,7 @@
             <p>{{ exercise.reps }} reps</p>
           </div>
           <div class="card-action">
-            <form action="{ url 'unassoc_exercise' workout.id exercise.id }" method="POST">
+            <form action="{% url 'unassoc_exercise' workout.id exercise.id %}" method="POST">
               {% csrf_token %}
               <button type='submit' class='btn'>Remove Exercise</button>
             </form>
@@ -88,7 +88,7 @@
             <p>{{ exercise.reps }} reps</p>
           </div>
           <div class="card-action">
-            <form action="{ url 'assoc_exercise' workout.id exercise.id }" method="POST">
+            <form action="{% url 'assoc_exercise' workout.id exercise.id %}" method="POST">
               {% csrf_token %}
               <button type='submit' class='btn'>Add Exercise</button>
             </form>
