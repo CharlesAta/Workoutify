@@ -1,7 +1,3 @@
-secrets.py
-settings.py
-workoutify
-
 # Django #
 *.log
 *.pot
