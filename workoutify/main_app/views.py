@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
-from .models import Workout
+from .models import Workout, Schedule
 
 # Create your views here.
 
@@ -45,9 +45,10 @@ def add_schedule(request, workout_id):
         new_schedule.save()
     return redirect('workouts_detail', pk=workout_id)
 
-def delete_schedule(request, workout_id):
-    pass
+def delete_schedule(request, workout_id, schedule_id):
+    # Schedule.objects.get(id=schedule_id).workout.remove(workout_id)
     # return redirect('workouts_detail', pk=workout_id)
+    pass
 
 
 def signup(request):
