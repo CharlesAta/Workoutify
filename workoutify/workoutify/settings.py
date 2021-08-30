@@ -21,6 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
+SECRET_KEY = '6@*ju)%@07_+m895bx+3-&n*dkcr3-&$wz@%eztprt!db_)yzj'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
