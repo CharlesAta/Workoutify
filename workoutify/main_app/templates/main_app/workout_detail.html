@@ -16,10 +16,16 @@
         <tr><th>Date</th><th>Time</th></tr>
       </thead>
       <tbody>
-        {% for schedule in workout.schedule_set.all %}
+        {% for schedule in workout.schedules.all %}
           <tr>
             <td>{{schedule.date}}</td>
             <td>{{schedule.time}}</td>
+            <td>
+              <form method='POST' action="{% url 'delete_schedule' workout.id schedule.id %}">
+                {% csrf_token %}
+                <button type="submit" class='btn'>Delete</button>
+              </form>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -28,5 +34,6 @@
 </div>
 
 <a href="{% url 'workouts_delete' workout.id %}">Delete</a>
+<a href="{% url 'workouts_update' workout.id %}">Edit</a>
 
 {% endblock %}

@@ -17,7 +17,8 @@ class Workout(models.Model):
 class Schedule(models.Model):
     date = models.DateField('workout date')
     time = models.TimeField('workout time')
-    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name='schedules')
+    
 
     def __str__(self):
         return f"Workout scheduled for {self.date} at {self.time}"

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
 from .models import Workout, Schedule
@@ -37,6 +37,11 @@ class WorkoutDelete(DeleteView):
     model = Workout
     success_url = '/workouts/'
 
+class WorkoutUpdate(UpdateView):
+    model = Workout
+    fields = ['name', 'location']
+
+
 def add_schedule(request, workout_id):
     form = ScheduleForm(request.POST)
     if form.is_valid():
@@ -46,9 +51,9 @@ def add_schedule(request, workout_id):
     return redirect('workouts_detail', pk=workout_id)
 
 def delete_schedule(request, workout_id, schedule_id):
-    # Schedule.objects.get(id=schedule_id).workout.remove(workout_id)
-    # return redirect('workouts_detail', pk=workout_id)
-    pass
+    Schedule.objects.filter(id=schedule_id).delete()
+    return redirect('workouts_detail', pk=workout_id)
+    
 
 
 def signup(request):
