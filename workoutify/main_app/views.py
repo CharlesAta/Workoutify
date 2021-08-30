@@ -33,6 +33,24 @@ class WorkoutDetail(DetailView):
         context['schedule_form'] = ScheduleForm()
         return context
 
+def workouts_detail(request, workout_id):
+    workout = Workout.objects.get(id=workout_id)
+    exercises_workout_doesnt_have = Exercise.objects.exclude(id__in = workout.exercises.all().values_list('id'))
+    schedule_form = ScheduleForm()
+    return render(request, 'main_app/workout_detail.html', {
+        'workout': workout, 'schedule_form': schedule_form,
+        # Add the toys to be displayed
+        'exercises': exercises_workout_doesnt_have
+    })
+
+def assoc_exercise(request, workout_id, exercise_id):
+    Workout.objects.get(id=workout_id).exercises.add(exercise_id)
+    return redirect('workouts_detail', workout_id=workout_id)
+
+def unassoc_exercise(request, workout_id, exercise_id):
+    Workout.objects.get(id=workout_id).exercises.remove(exercise_id)
+    return redirect('workouts_detail', workout_id=workout_id)
+
 class WorkoutDelete(DeleteView):
     model = Workout
     success_url = '/workouts/'
