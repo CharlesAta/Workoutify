@@ -12,4 +12,9 @@ urlpatterns = [
     path('workouts/<int:workout_id>/add_schedule/', views.add_schedule, name='add_schedule'),
     path('workouts/<int:workout_id>/delete_schedule/<int:schedule_id>/', views.delete_schedule, name='delete_schedule'),
     path('accounts/signup/', views.signup, name='signup'),
+    path('exercises/', views.ExerciseList.as_view(), name='exercises_index'),
+    path('exercises/create/', views.ExerciseCreate.as_view(), name='exercises_create'),
+    path('exercises/<int:pk>/', views.ExerciseDetail.as_view(), name='exercises_detail'),
+    path('exercises/<int:pk>/update/', views.ExerciseUpdate.as_view(), name='exercises_update'),
+    path('exercises/<int:pk>/delete/', views.ExerciseDelete.as_view(), name='exercises_delete'),
 ]

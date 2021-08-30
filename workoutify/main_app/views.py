@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
-from .models import Workout, Schedule
+from .models import Workout, Schedule, Exercise
 
 # Create your views here.
 
@@ -40,6 +40,32 @@ class WorkoutDelete(DeleteView):
 class WorkoutUpdate(UpdateView):
     model = Workout
     fields = ['name', 'location']
+
+
+
+class ExerciseCreate(CreateView):
+    model = Exercise
+    fields = ['name', 'description', 'sets', 'reps']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class ExerciseList(ListView):
+    model = Exercise
+
+class ExerciseDetail(DetailView):
+    model = Exercise
+
+class ExerciseDelete(DeleteView):
+    model = Exercise
+    success_url = '/exercises/'
+
+class ExerciseUpdate(UpdateView):
+    model = Exercise
+    fields = ['name', 'description', 'sets', 'reps']
+
+
 
 
 def add_schedule(request, workout_id):
