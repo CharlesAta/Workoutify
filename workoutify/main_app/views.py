@@ -43,7 +43,6 @@ def add_schedule(request, workout_id):
         new_schedule = form.save(commit=False)
         new_schedule.workout_id = workout_id
         new_schedule.save()
-        print('this is the schedule', new_schedule.time)
     return redirect('workouts_detail', pk=workout_id)
 
 def delete_schedule(request, workout_id):
