@@ -29,3 +29,10 @@ schedWorkoutBtn.addEventListener('click', function() {
     let two_four_clock = `${hours}${minutes}`
     timeEl.value = two_four_clock;
 })
+
+$.ajax({
+    url: '/ajax/',
+    success: function (data) {
+        console.log(data);
+    }
+});

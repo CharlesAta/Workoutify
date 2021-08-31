@@ -4,7 +4,7 @@
 <h4>{{ workout.location }}</h4>
 
 <div class="col s6">
-    <form action="{% url 'add_schedule' workout.id %}" method="post">
+    <form id="scheduleForm" method="post">
       {% csrf_token %}
       {{ schedule_form.as_p }}
       <input id="sched-workout-btn" type="submit" class="btn" value="Schedule Workout">
@@ -106,5 +106,28 @@
 <a href="{% url 'workouts_update' workout.id %}">Edit</a>
 
 
-
+<script>
+  $(document).ready(function () {
+      // catch the form's submit event
+      $('#scheduleForm').submit(function () {
+          // create an AJAX call
+          $.ajax({
+              data: $(this).serialize(), // get the form data
+              type: $(this).attr('method'), // GET or POST
+              url: "{% url 'add_schedule' workout.id %}",
+              // on success
+              success: function (response) {
+                  alert("Thankyou for reaching us out " + response.name);
+              },
+              // on error
+              error: function (response) {
+                  // alert the error if any error occured
+                  alert(response.responseJSON.errors);
+                  console.log(response.responseJSON.errors)
+              }
+          });
+          return false;
+      });
+  })
+</script>
 {% endblock %}

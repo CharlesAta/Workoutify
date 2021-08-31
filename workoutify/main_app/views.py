@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
 from .models import Workout, Schedule, Exercise
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -59,8 +60,6 @@ class WorkoutUpdate(UpdateView):
     model = Workout
     fields = ['name', 'location']
 
-
-
 class ExerciseCreate(CreateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
@@ -83,23 +82,30 @@ class ExerciseUpdate(UpdateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
 
-
-
-
 def add_schedule(request, workout_id):
-    form = ScheduleForm(request.POST)
-    if form.is_valid():
-        new_schedule = form.save(commit=False)
-        new_schedule.workout_id = workout_id
-        new_schedule.save()
+    if request.is_ajax() and request.method == "POST":
+        # form = ScheduleForm(request.POST)
+        if form.is_valid():
+            # new_schedule = form.save(commit=False)
+            # new_schedule.workout_id = workout_id
+            # new_schedule.save()
+            date = request.POST.get('date', None)
+            time = request.POST.get('time', None)
+            if first_name and last_name: #cheking if first_name and last_name have value
+            response = {
+                         'msg':'Your form has been submitted successfully' # response message
+            }
+            return JsonResponse(response)
+            # return JsonResponse({"new_schedule": new_schedule}, status=200)
+    else:
+        errors = form.errors.as_json()
+        return JsonResponse({"errors": errors}, status=400)
     return redirect('workouts_detail', workout_id=workout_id)
 
 def delete_schedule(request, workout_id, schedule_id):
     Schedule.objects.filter(id=schedule_id).delete()
     return redirect('workouts_detail', workout_id=workout_id)
     
-
-
 def signup(request):
     error_message = ''
     if request.method == 'POST':
