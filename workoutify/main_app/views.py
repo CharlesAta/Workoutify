@@ -4,9 +4,27 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
-from .models import Workout, Schedule, Exercise
+from .models import Workout, Schedule, Exercise, Weather
+import requests
+import os
+
+SECRET_KEY = os.environ['WEATHER_API_KEY']
 
 # Create your views here.
+
+
+
+
+def getWeather(request):
+    response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id=6077260&appid={SECRET_KEY}')
+    weatherdata = response.json()
+    print(weatherdata)
+    return render(request, 'test.html', {
+        'temperature': weatherdata['main']['temp'],
+        'description': weatherdata['weather']['description'],
+        'city': weatherdata['name'],
+    })
+
 
 def home(request):
     return render(request, 'home.html')
