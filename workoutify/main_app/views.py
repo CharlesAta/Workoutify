@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from .forms import UserForm, ScheduleForm
 from .models import Workout, Schedule, Exercise
 from django.http import JsonResponse
+from django.forms.models import model_to_dict
 
 # Create your views here.
 
@@ -84,23 +85,20 @@ class ExerciseUpdate(UpdateView):
 
 def add_schedule(request, workout_id):
     if request.is_ajax() and request.method == "POST":
-        # form = ScheduleForm(request.POST)
+        form = ScheduleForm(request.POST)
+        print("form", form)
         if form.is_valid():
-            # new_schedule = form.save(commit=False)
-            # new_schedule.workout_id = workout_id
-            # new_schedule.save()
-            date = request.POST.get('date', None)
-            time = request.POST.get('time', None)
-            if first_name and last_name: #cheking if first_name and last_name have value
-            response = {
-                         'msg':'Your form has been submitted successfully' # response message
-            }
-            return JsonResponse(response)
+            new_schedule = form.save(commit=False)
+            new_schedule.workout_id = workout_id
+            instance = new_schedule.save()
+            dict_obj = model_to_dict(instance)
+            serialized = json.dumps(dict_obj)
+            print(serialized)
             # return JsonResponse({"new_schedule": new_schedule}, status=200)
-    else:
-        errors = form.errors.as_json()
-        return JsonResponse({"errors": errors}, status=400)
-    return redirect('workouts_detail', workout_id=workout_id)
+    # else:
+    #     errors = form.errors.as_json()
+    #     return JsonResponse({"errors": errors}, status=400)
+    # return redirect('workouts_detail', workout_id=workout_id)
 
 def delete_schedule(request, workout_id, schedule_id):
     Schedule.objects.filter(id=schedule_id).delete()
