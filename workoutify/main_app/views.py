@@ -92,11 +92,11 @@ def add_schedule(request, workout_id):
         new_schedule = form.save(commit=False)
         new_schedule.workout_id = workout_id
         new_schedule.save()
-    return redirect('workouts_detail', pk=workout_id)
+    return redirect('workouts_detail', workout_id=workout_id)
 
 def delete_schedule(request, workout_id, schedule_id):
     Schedule.objects.filter(id=schedule_id).delete()
-    return redirect('workouts_detail', pk=workout_id)
+    return redirect('workouts_detail', workout_id=workout_id)
     
 
 
