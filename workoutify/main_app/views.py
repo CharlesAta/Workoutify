@@ -46,12 +46,20 @@ def workouts_detail(request, workout_id):
     })
 
 def assoc_exercise(request, workout_id, exercise_id):
-    Workout.objects.get(id=workout_id).exercises.add(exercise_id)
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        workout = Workout.objects.get(id=workout_id)
+        workout.exercises.add(exercise_id)
+        exercise = Exercise.objects.get(id=exercise_id)
+        return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
+    return JsonResponse({"error": ""}, status=400)
 
 def unassoc_exercise(request, workout_id, exercise_id):
-    Workout.objects.get(id=workout_id).exercises.remove(exercise_id)
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        workout = Workout.objects.get(id=workout_id)
+        workout.exercises.remove(exercise_id)
+        exercise = Exercise.objects.get(id=exercise_id)
+        return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
+    return JsonResponse({"error": ""}, status=400)
 
 class WorkoutDelete(DeleteView):
     model = Workout
@@ -85,7 +93,6 @@ class ExerciseUpdate(UpdateView):
 
 def add_schedule(request, workout_id):
     if request.is_ajax() and request.method == "POST":
-        
         form = ScheduleForm(request.POST)
         if form.is_valid():
             new_schedule = form.save(commit=False)
@@ -95,12 +102,14 @@ def add_schedule(request, workout_id):
         else:
             errors = form.errors.as_json()
             return JsonResponse({"errors": errors}, status=400)
-        # return redirect('workouts_detail', workout_id=workout_id)
     return JsonResponse({"error": ""}, status=400)
 
 def delete_schedule(request, workout_id, schedule_id):
-    Schedule.objects.filter(id=schedule_id).delete()
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        sched = Schedule.objects.get(id=schedule_id)
+        sched.delete()
+    # return redirect('workouts_detail', workout_id=workout_id)
+        return JsonResponse({"result": "ok"}, status=200)
     
 def signup(request):
     error_message = ''
