@@ -7,6 +7,14 @@
   
     <button type='submit'>Update Weather Location</button>
 </form>
+<div>
+    <ul>
+        <li>City: {{weather.get_city_display}}</li>
+        <li>Weather Description: {{weather.description}}</li>
+        <li>Temperature: {{weather.temperature}}</li>
+        <li><img src="{{weather.icon}}" alt=""></li>
+    </ul>
+</div>
 <script>
     let selectEl = document.getElementById('id_city');
     M.FormSelect.init(selectEl);

@@ -43,6 +43,7 @@ class Weather(models.Model):
     )
     city_id = models.IntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    icon = models.CharField(max_length=200)
 
 class Schedule(models.Model):
     date = models.DateField('workout date')

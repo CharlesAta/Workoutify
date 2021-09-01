@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('update_weather/', views.update_weather, name='update_weather'),
     path('about/', views.about, name='about'),
-    path('test/', views.getWeather, name="getWeather"),
     path('workouts/', views.WorkoutList.as_view(), name='workouts_index'),
     path('workouts/create/', views.WorkoutCreate.as_view(), name='workouts_create'),
     path('workouts/<int:workout_id>/', views.workouts_detail, name='workouts_detail'),

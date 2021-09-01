@@ -23,21 +23,14 @@ cities = {
 # Create your views here.
 
 
-def getWeather(request):
-    response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id=6077260&appid={SECRET_KEY}')
-    weatherdata = response.json()
-    print(weatherdata)
-    return render(request, 'test.html', {
-        'temperature': weatherdata['main']['temp'],
-        'description': weatherdata['weather'][0]['main'],
-        'city': weatherdata['name'],
-    })
-
-
 def home(request):
-    current_user = Weather.objects.filter(user=request.user)
-    form = WeatherForm(initial={'city': current_user[0].city})
-    return render(request, 'home.html', {'weather_form': form})
+    current_weather = Weather.objects.get(user=request.user)
+    
+    if (current_weather):
+        form = WeatherForm(initial={'city': current_weather.city})
+    else:
+        form = WeatherForm()
+    return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
 
 class WeatherForm(ModelForm):
     class Meta:
@@ -125,13 +118,15 @@ def update_weather(request):
         response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id={ cities_id }&appid={SECRET_KEY}')
         weatherdata = response.json()
         user_id = request.user
+        
         obj, created = Weather.objects.update_or_create(
             user = user_id,
             defaults={
                 'city_id': cities_id,
                 'temperature':int(weatherdata['main']['temp'] - 273.15),
                 'description':weatherdata['weather'][0]['main'],
-                'city': data['city']
+                'city': data['city'],
+                'icon': f"https://openweathermap.org/img/wn/{weatherdata['weather'][0]['icon']}@2x.png"
             }
         )
     return redirect('home')
