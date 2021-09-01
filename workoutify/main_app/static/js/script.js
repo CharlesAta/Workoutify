@@ -1,3 +1,27 @@
+$(document).ready(function () {
+    // catch the form's submit event
+    $('#sched-workout-btn').click(function () {
+        // create an AJAX call
+
+        let serializedData = $("#scheduleForm").serialize();
+        
+        $.ajax({
+            url: $("#scheduleForm").data('url'),
+            data: serializedData,
+            type: 'post',
+            success: function(response) {
+                $("#scheduleForm").trigger('reset');
+
+                $("body").prepend(response.schedule.date + response.schedule.time )
+            
+
+            }
+        })
+
+    })
+})
+
+
 let dateEl = document.getElementById('id_date');
 M.Datepicker.init(dateEl, {
 format: 'yyyy-mm-dd',
@@ -30,9 +54,3 @@ schedWorkoutBtn.addEventListener('click', function() {
     timeEl.value = two_four_clock;
 })
 
-$.ajax({
-    url: '/ajax/',
-    success: function (data) {
-        console.log(data);
-    }
-});

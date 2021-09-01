@@ -85,20 +85,18 @@ class ExerciseUpdate(UpdateView):
 
 def add_schedule(request, workout_id):
     if request.is_ajax() and request.method == "POST":
+        
         form = ScheduleForm(request.POST)
-        print("form", form)
         if form.is_valid():
             new_schedule = form.save(commit=False)
             new_schedule.workout_id = workout_id
-            instance = new_schedule.save()
-            dict_obj = model_to_dict(instance)
-            serialized = json.dumps(dict_obj)
-            print(serialized)
-            # return JsonResponse({"new_schedule": new_schedule}, status=200)
-    # else:
-    #     errors = form.errors.as_json()
-    #     return JsonResponse({"errors": errors}, status=400)
-    # return redirect('workouts_detail', workout_id=workout_id)
+            new_schedule.save()
+            return JsonResponse({"schedule": model_to_dict(new_schedule)}, status=200)
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({"errors": errors}, status=400)
+        # return redirect('workouts_detail', workout_id=workout_id)
+    return JsonResponse({"error": ""}, status=400)
 
 def delete_schedule(request, workout_id, schedule_id):
     Schedule.objects.filter(id=schedule_id).delete()

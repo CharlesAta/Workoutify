@@ -4,10 +4,10 @@
 <h4>{{ workout.location }}</h4>
 
 <div class="col s6">
-    <form id="scheduleForm" method="post">
+    <form id="scheduleForm" method="post" data-url="{% url 'add_schedule' workout.id %}">
       {% csrf_token %}
       {{ schedule_form.as_p }}
-      <input id="sched-workout-btn" type="submit" class="btn" value="Schedule Workout">
+      <button id="sched-workout-btn" type="button" class="btn"> Schedule Workout</button>
     </form>
     <br>
 
@@ -105,62 +105,45 @@
 <a href="{% url 'workouts_delete' workout.id %}">Delete</a>
 <a href="{% url 'workouts_update' workout.id %}">Edit</a>
 
-{% endblock %}
-{% block javascript %}
 <script>
-let dateEl = document.getElementById('id_date');
-M.Datepicker.init(dateEl, {
-format: 'yyyy-mm-dd',
-defaultDate: new Date(),
-setDefaultDate: true,
-autoClose: true
-});
-
-let timeEl = document.getElementById('id_time');
-M.Timepicker.init(timeEl, {
-defaultTime: 'now',
-});
-
-let schedWorkoutBtn = document.getElementById('sched-workout-btn');
-
-schedWorkoutBtn.addEventListener('click', function() {
-    let time = timeEl.value;
-    let hours = parseInt(time.slice(0, time.indexOf(':')));
-    if (time.endsWith("AM")){
-        if (hours === 12){
-            hours = 0;
-        }
-    } else {
-        if (hours < 12){
-            hours += 12;
-        }
-    }
-    let minutes = time.slice(time.indexOf(':'), time.indexOf(' '));
-    let two_four_clock = `${hours}${minutes}`
-    timeEl.value = two_four_clock;
-})
-
-
 $(document).ready(function () {
     // catch the form's submit event
-    $('#scheduleForm').submit(function () {
+    $('#sched-workout-btn').submit(function () {
         // create an AJAX call
-        $.ajax({
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: "{% url 'add_schedule' workout.id %}",
-            // on success
-            success: function (response) {
-                alert("Thankyou for reaching us out " + response.name);
-            },
-            // on error
-            error: function (response) {
-                // alert the error if any error occured
-                alert(response.responseJSON.errors);
-                console.log(response.responseJSON.errors)
-            }
-        });
-        return false;
+
+        let serializedData = $("#scheduleForm").serialize();
+
+
+        console.log(serializedData)
+
+        // $.ajax({
+        //     data: $(this).serialize(), // get the form data
+        //     type: 'POST', // GET or POST
+        //     url: "{% url 'add_schedule' workout.id %}",
+        //     // on success
+        //     success: function (response) {
+        //         // on successfull creating object
+        //         // 1. clear the form.
+        //         $("#scheduleForm").trigger('reset');
+
+        //         // display the newly friend to table.
+        //         let instance = JSON.parse(response["instance"]);
+        //         console.log(instance)
+        //         let fields = instance[0]["fields"];
+        //         console.log(fields)
+        //         $("#workout-schedule tbody").prepend(
+        //             `<tr>
+        //             <td>${fields["date"]||""}</td>
+        //             <td>${fields["time"]||""}</td>
+        //             </tr>`
+        //         )
+        //     },
+        //     error: function (response) {
+        //         // alert the error if any error occured
+        //         alert(response["responseJSON"]["error"]);
+        //     }
+        // });
+        // return false;
     });
 })
 </script>
