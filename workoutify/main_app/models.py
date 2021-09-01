@@ -31,7 +31,6 @@ CITIES = (
     ('V', 'Vancouver'),
     ('T', 'Toronto'),
     ('M', 'Montreal'),
-
 )
 
 class Weather(models.Model):
@@ -43,6 +42,7 @@ class Weather(models.Model):
         default=CITIES[0][0]   
     )
     city_id = models.IntegerField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Schedule(models.Model):
     date = models.DateField('workout date')

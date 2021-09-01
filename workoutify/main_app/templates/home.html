@@ -1,5 +1,18 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Landing Page</h1>
+<h1>Home</h1>
+
+<form method='POST' action="{% url 'update_weather' %}">
+    {% csrf_token %} {{ weather_form.as_p }}
+  
+    <button type='submit'>Update Weather Location</button>
+</form>
+<script>
+    let selectEl = document.getElementById('id_city');
+    M.FormSelect.init(selectEl);
+</script>
+
 
 {% endblock %}
+
+

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import User, Schedule
+from .models import User, Schedule, Weather
 from django import forms
 
 class UserForm(ModelForm):
@@ -12,5 +12,10 @@ class ScheduleForm(ModelForm):
         model = Schedule
         fields = ['date', 'time']
 
+class WeatherForm(ModelForm):
+    class Meta:
+        model = Weather
+        fields = ['city']
+        
 # class SettingsForm(forms.Form):
 #     time = forms.TimeField(widget=forms.TimeInput(attrs={'class':'timepicker'}))

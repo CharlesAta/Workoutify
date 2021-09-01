@@ -3,16 +3,24 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .forms import UserForm, ScheduleForm
+from .forms import UserForm, ScheduleForm, WeatherForm, ModelForm
 from .models import Workout, Schedule, Exercise, Weather
 import requests
 import os
 
+
+
 SECRET_KEY = os.environ['WEATHER_API_KEY']
 
+cities = {
+    'C': 5913490,
+    'S': 6141256,
+    'V': 6173331,
+    'T': 6167865,
+    'M': 6077246
+}
+
 # Create your views here.
-
-
 
 
 def getWeather(request):
@@ -21,13 +29,20 @@ def getWeather(request):
     print(weatherdata)
     return render(request, 'test.html', {
         'temperature': weatherdata['main']['temp'],
-        'description': weatherdata['weather']['description'],
+        'description': weatherdata['weather'][0]['main'],
         'city': weatherdata['name'],
     })
 
 
 def home(request):
-    return render(request, 'home.html')
+    current_user = Weather.objects.filter(user=request.user)
+    form = WeatherForm(initial={'city': current_user[0].city})
+    return render(request, 'home.html', {'weather_form': form})
+
+class WeatherForm(ModelForm):
+    class Meta:
+        model = Weather
+        fields = ['city']
 
 def about(request):
     return render(request, 'about.html')
@@ -102,6 +117,24 @@ class ExerciseUpdate(UpdateView):
     fields = ['name', 'description', 'sets', 'reps']
 
 
+def update_weather(request):
+    form = WeatherForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data
+        cities_id = cities[data['city']]
+        response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id={ cities_id }&appid={SECRET_KEY}')
+        weatherdata = response.json()
+        user_id = request.user
+        obj, created = Weather.objects.update_or_create(
+            user = user_id,
+            defaults={
+                'city_id': cities_id,
+                'temperature':int(weatherdata['main']['temp'] - 273.15),
+                'description':weatherdata['weather'][0]['main'],
+                'city': data['city']
+            }
+        )
+    return redirect('home')
 
 
 def add_schedule(request, workout_id):
