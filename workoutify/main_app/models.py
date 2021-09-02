@@ -56,6 +56,6 @@ class Schedule(models.Model):
         return f"Workout scheduled for {self.date} at {self.time}"
     
     class Meta:
-        ordering = ['-date']
+        ordering = ['date', 'time']
 
 

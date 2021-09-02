@@ -3,12 +3,12 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 from .forms import UserForm, ScheduleForm, WeatherForm, ModelForm
 from .models import Workout, Schedule, Exercise, Weather
 import requests
 import os
-
-
 
 SECRET_KEY = os.environ['WEATHER_API_KEY']
 
@@ -65,17 +65,24 @@ def workouts_detail(request, workout_id):
     schedule_form = ScheduleForm()
     return render(request, 'main_app/workout_detail.html', {
         'workout': workout, 'schedule_form': schedule_form,
-        # Add the toys to be displayed
         'exercises': exercises_workout_doesnt_have
     })
 
 def assoc_exercise(request, workout_id, exercise_id):
-    Workout.objects.get(id=workout_id).exercises.add(exercise_id)
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        workout = Workout.objects.get(id=workout_id)
+        workout.exercises.add(exercise_id)
+        exercise = Exercise.objects.get(id=exercise_id)
+        return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
+    return JsonResponse({"error": ""}, status=400)
 
 def unassoc_exercise(request, workout_id, exercise_id):
-    Workout.objects.get(id=workout_id).exercises.remove(exercise_id)
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        workout = Workout.objects.get(id=workout_id)
+        workout.exercises.remove(exercise_id)
+        exercise = Exercise.objects.get(id=exercise_id)
+        return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
+    return JsonResponse({"error": ""}, status=400)
 
 class WorkoutDelete(DeleteView):
     model = Workout
@@ -84,8 +91,6 @@ class WorkoutDelete(DeleteView):
 class WorkoutUpdate(UpdateView):
     model = Workout
     fields = ['name', 'location']
-
-
 
 class ExerciseCreate(CreateView):
     model = Exercise
@@ -109,7 +114,6 @@ class ExerciseUpdate(UpdateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
 
-
 def update_weather(request):
     form = WeatherForm(request.POST)
     if form.is_valid():
@@ -131,21 +135,25 @@ def update_weather(request):
         )
     return redirect('home')
 
-
 def add_schedule(request, workout_id):
-    form = ScheduleForm(request.POST)
-    if form.is_valid():
-        new_schedule = form.save(commit=False)
-        new_schedule.workout_id = workout_id
-        new_schedule.save()
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        form = ScheduleForm(request.POST)
+        if form.is_valid():
+            new_schedule = form.save(commit=False)
+            new_schedule.workout_id = workout_id
+            new_schedule.save()
+            return JsonResponse({"schedule": model_to_dict(new_schedule)}, status=200)
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({"errors": errors}, status=400)
+    return JsonResponse({"error": ""}, status=400)
 
 def delete_schedule(request, workout_id, schedule_id):
-    Schedule.objects.filter(id=schedule_id).delete()
-    return redirect('workouts_detail', workout_id=workout_id)
+    if request.is_ajax() and request.method == "POST":
+        sched = Schedule.objects.get(id=schedule_id)
+        sched.delete()
+        return JsonResponse({"result": "ok"}, status=200)
     
-
-
 def signup(request):
     error_message = ''
     if request.method == 'POST':
