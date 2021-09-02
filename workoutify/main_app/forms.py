@@ -28,5 +28,3 @@ class WeatherForm(ModelForm):
         model = Weather
         fields = ['city']
         
-# class SettingsForm(forms.Form):
-#     time = forms.TimeField(widget=forms.TimeInput(attrs={'class':'timepicker'}))

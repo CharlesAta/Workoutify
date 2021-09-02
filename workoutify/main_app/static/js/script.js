@@ -49,11 +49,10 @@ $(document).ready(function () {
                 let year = dateString.slice(0, 4);
                 
                 
-                $("#scheduleTable").prepend(`<tr id="schedRow" data-id="${response.schedule.id}">
-                <td>${month} ${day}, ${year}</td>
-                <td>${formattedTime}</td>
+                $("#scheduleTableBody").prepend(`<tr id="schedRow" data-id="${response.schedule.id}">
+                <td class="center">${month} ${day}, ${year} - ${formattedTime}</td>
                 <td>
-                <button id="scheduleRemove" type="submit" class="btn" data-id="${response.schedule.id}">
+                <button id="scheduleRemove" type="submit" class="btn-floating btn-small blue lighten-1" data-id="${response.schedule.id}">
                 <i class="material-icons">close</i>
                 </button>
                 </td></tr>`)
@@ -63,7 +62,7 @@ $(document).ready(function () {
 
     });
 
-    $('#scheduleTable').on('click', 'button#scheduleRemove', function(event) {
+    $('#scheduleTableBody').on('click', 'button#scheduleRemove', function(event) {
 
         let scheduleId = $(this).data('id');
         let workoutId = $('#workout').data('id');
@@ -100,23 +99,23 @@ $(document).ready(function () {
 
                 $("#currentExercises").append(
                     `<li data-id="${ response.exercise.id }">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title activator grey-text text-darken-4">
+                        <div class="card blue-grey lighten-1">
+                            <div class="card-content white-text">
+                                <span class="card-title activator amber-text text-accent-2">
                                     ${ response.exercise.name }<i class="material-icons right">more_vert</i>
                                 </span>
                                 <p>${ response.exercise.sets } Sets</p>
                                 <p>${ response.exercise.reps } Reps</p>
                             </div>
                         
-                            <div class="card-reveal">
+                            <div class="card-reveal blue-grey lighten-4">
                                 <span class="card-title grey-text text-darken-4">${ response.exercise.name }<i class="material-icons right">close</i></span>
                                 <p>${ response.exercise.description }</p>
                                 <p>${ response.exercise.sets } Sets</p>
                                 <p>${ response.exercise.reps } Reps</p>
                             </div>
                             <div class="card-action">
-                                <button id="exerciseRemove" type="submit" class='btn' data-id="${ response.exercise.id }">Remove From Workout</button>
+                                <button id="exerciseRemove" type="submit" class='btn blue darken-2' data-id="${ response.exercise.id }"><i class="material-icons">remove</i></button>
                             </div>
                         </div>
                     </li>`)
@@ -124,7 +123,7 @@ $(document).ready(function () {
                 $(`#availableExercises li[data-id="${ response.exercise.id }"]`).remove();
 
                 if (!(document.querySelectorAll("#availableExercises li").length)){
-                    $('#availableExercises').prepend('<h5 id="allExercisesText">All Exercises have been added to the workout</h5>')
+                    $('#availableExercises').prepend('<h5 id="allExercisesText">All Exercises Have Been Added To The Workout</h5>')
                 }
 
                 $('#noExercisesText').remove();
@@ -153,23 +152,23 @@ $(document).ready(function () {
                 
                 $("#availableExercises").append(
                     `<li data-id="${ response.exercise.id }">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title activator grey-text text-darken-4">
+                        <div class="card blue-grey lighten-1">
+                            <div class="card-content white-text">
+                                <span class="card-title activator amber-text text-accent-2">
                                     ${ response.exercise.name }<i class="material-icons right">more_vert</i>
                                 </span>
                                 <p>${ response.exercise.sets } Sets</p>
                                 <p>${ response.exercise.reps } Reps</p>
                             </div>
                             
-                            <div class="card-reveal">
+                            <div class="card-reveal blue-grey lighten-4">
                                 <span class="card-title grey-text text-darken-4">${ response.exercise.name }<i class="material-icons right">close</i></span>
                                 <p>${ response.exercise.description }</p>
                                 <p>${ response.exercise.sets } Sets</p>
                                 <p>${ response.exercise.reps } Reps</p>
                             </div>
                             <div class="card-action">
-                                <button id="exerciseAdd" type="submit" class='btn' data-id="${ response.exercise.id }">Add To Workout</button>
+                                <button id="exerciseAdd" type="submit" class='btn blue darken-2' data-id="${ response.exercise.id }"><i class="material-icons">add</i></button>
                             </div>
                         </div>
                     </li>`);
@@ -178,7 +177,7 @@ $(document).ready(function () {
 
 
                 if (!((document.querySelectorAll("#currentExercises li")).length)){
-                    $('#currentExercises').prepend('<h5 id="noExercisesText">No Exercises :(</h5>')
+                    $('#currentExercises').prepend('<h5 id="noExercisesText">No Exercises Added Yet</h5>')
                 } 
 
                 $('#allExercisesText').remove();
@@ -232,3 +231,80 @@ function getPosition(string, subString, index) {
   }
 
 
+
+
+
+  // Convert time to a format of hours, minutes, seconds, and milliseconds
+
+function timeToString(time) {
+    let diffInHrs = time / 3600000;
+    let hh = Math.floor(diffInHrs);
+  
+    let diffInMin = (diffInHrs - hh) * 60;
+    let mm = Math.floor(diffInMin);
+  
+    let diffInSec = (diffInMin - mm) * 60;
+    let ss = Math.floor(diffInSec);
+  
+    let diffInMs = (diffInSec - ss) * 100;
+    let ms = Math.floor(diffInMs);
+  
+    let formattedMM = mm.toString().padStart(2, "0");
+    let formattedSS = ss.toString().padStart(2, "0");
+    let formattedMS = ms.toString().padStart(2, "0");
+  
+    return `${formattedMM}:${formattedSS}:${formattedMS}`;
+  }
+  
+  // Declare variables to use in our functions below
+  
+  let startTime;
+  let elapsedTime = 0;
+  let timerInterval;
+  
+  // Create function to modify innerHTML
+  
+  function print(txt) {
+    document.getElementById("display").innerHTML = txt;
+  }
+  
+  // Create "start", "pause" and "reset" functions
+  
+  function start() {
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function printTime() {
+      elapsedTime = Date.now() - startTime;
+      print(timeToString(elapsedTime));
+    }, 10);
+    showButton("PAUSE");
+  }
+  
+  function pause() {
+    clearInterval(timerInterval);
+    showButton("PLAY");
+  }
+  
+  function reset() {
+    clearInterval(timerInterval);
+    print("00:00:00");
+    elapsedTime = 0;
+    showButton("PLAY");
+  }
+  
+  // Create function to display buttons
+  
+  function showButton(buttonKey) {
+    const buttonToShow = buttonKey === "PLAY" ? playButton : pauseButton;
+    const buttonToHide = buttonKey === "PLAY" ? pauseButton : playButton;
+    buttonToShow.style.display = "block";
+    buttonToHide.style.display = "none";
+  }
+  // Create event listeners
+  
+  let playButton = document.getElementById("playButton");
+  let pauseButton = document.getElementById("pauseButton");
+  let resetButton = document.getElementById("resetButton");
+  
+  playButton.addEventListener("click", start);
+  pauseButton.addEventListener("click", pause);
+  resetButton.addEventListener("click", reset);

@@ -2,3 +2,109 @@ ul {
   list-style-type: none;
   list-style: none;
 }
+
+.datepicker-date-display,
+.datepicker-table td.is-selected,
+.timepicker-digital-display {
+  background-color: #0277bd;
+}
+
+.datepicker-cancel,
+.datepicker-done,
+.timepicker-close {
+  color: #039be5;
+}
+
+.timepicker-canvas-bearing,
+.timepicker-canvas-bg {
+  fill: #0277bd;
+}
+
+.timepicker-svg line {
+  stroke: #0277bd;
+}
+
+#scheduleFormAdd label {
+  color: #01579b;
+}
+
+.card .card-title {
+  font-weight: 600;
+}
+
+#scheduleTableBody {
+  display: block;
+  height: 200px;
+  width: 100%;
+  overflow: auto;
+}
+
+#scheduleTableBody tr {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#availableExercises {
+  height: 450px;
+  overflow: auto;
+}
+
+#currentExercises {
+  height: 450px;
+  overflow: auto;
+}
+
+.stopwatch {
+  display: grid;
+  justify-items: center;
+  grid-row-gap: 23px;
+  width: 100%;
+  padding-top: 25px;
+}
+
+.sw-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 270px;
+  width: 270px;
+
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.time {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
+  font-size: 48px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(190, 190, 190, 0.5);
+  border-radius: 40%;
+  width: 187px;
+}
+
+.sw-button {
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  margin: 0;
+  outline: none;
+}
+
+#playButton {
+  display: block;
+}
+
+#pauseButton {
+  display: none;
+}
+
+.workout-options {
+  margin-top: 40px;
+}

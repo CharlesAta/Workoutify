@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %} {% if object %}
+<h1 class="blue-text darken-2">Edit Exercise</h1>
+{% else %}
 <h1 class="blue-text darken-2">Add Exercise</h1>
+{% endif %}
 <!-- Leaving the action empty makes the form post to the same url used to display it -->
 <form action="" method="post">
   <!-- Django requires the following for security purposes -->
@@ -10,6 +13,6 @@
   </table>
   <div class="row">
     <input type="submit" value="Submit!" class="btn blue darken-2" />
-  </div>  
+  </div>
 </form>
 {% endblock %}

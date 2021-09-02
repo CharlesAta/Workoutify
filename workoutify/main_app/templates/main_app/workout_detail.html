@@ -1,29 +1,36 @@
 {% extends 'base.html' %} {% block content %}
 
+<div class="row">
+  <div class="col s10 ">
+  <h1 id="workout" data-id="{{ workout.id }}"  class="black-text">{{ workout.name }}</h1>
+  <h4 class="blue-text darken-2">{{ workout.location }}</h4>
+  </div>
+  <div class="col s2 right workout-options">
+    <a class="btn blue darken-2 right" href="{% url 'workouts_delete' workout.id %}">Delete</a>
+    <a class="btn blue darken-2 right" href="{% url 'workouts_update' workout.id %}">Edit</a>
+  </div>
+</div>
 
-<h1 id="workout" data-id="{{ workout.id }}"  class="black-text">{{ workout.name }}</h1>
-<h4 class="blue-text darken-2">{{ workout.location }}</h4>
-
-
-<div class="col s6">
+<div class="row">
+<div class="col s12 m6">
     <form id="scheduleFormAdd" method="post" data-url="{% url 'add_schedule' workout.id %}">
       {% csrf_token %}
       {{ schedule_form.as_p }}
       <button id="add-sched-workout-btn" type="button" class="btn blue darken-2"> Schedule Workout</button>
     </form>
     <br>
-
+  </div>
+    <div class="col s12 m6">
     <table class="striped">
       <thead>
-        <tr><th>Date</th><th>Time</th></tr>
+        <tr><th class="center">Date</th></tr>
       </thead>
-      <tbody id="scheduleTable">
+      <tbody id="scheduleTableBody">
         {% for schedule in workout.schedules.all %}
           <tr id="schedRow" data-id="{{ schedule.id }}">
-            <td>{{schedule.date}}</td>
-            <td>{{schedule.time}}</td>
+            <td class="center">{{schedule.date}} - {{schedule.time}}</td>
             <td>
-              <button id="scheduleRemove" type="submit" class='btn blue darken-2' data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
+              <button id="scheduleRemove" type="submit" class="btn-floating btn-small blue lighten-1" data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
             </td>
           </tr>
         {% endfor %}
@@ -31,10 +38,11 @@
     </table>
   </div>
 </div>
+</div>
 
 <hr>
 <div class="row">
-  <div class="col s6">
+  <div class="col s12 m6">
     <h3 class="blue-text darken-2">Current Workout</h3>
     <div>
       <ul id="currentExercises">
@@ -46,32 +54,32 @@
               <span class="card-title activator amber-text text-accent-2">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
-              <p>{{ exercise.sets }} sets</p>
-              <p>{{ exercise.reps }} reps</p>
+              <p>{{ exercise.sets }} Sets</p>
+              <p>{{ exercise.reps }} Reps</p>
             </div>
             
-            <div class="card-reveal">
+            <div class="card-reveal blue-grey lighten-4">
               <span class="card-title grey-text text-darken-4">{{ exercise.name }}<i class="material-icons right">close</i></span>
               <p>{{ exercise.description }}</p>
-              <p>{{ exercise.sets }} sets</p>
-              <p>{{ exercise.reps }} reps</p>
+              <p>{{ exercise.sets }} Sets</p>
+              <p>{{ exercise.reps }} Reps</p>
             </div>
             <div class="card-action">
-              <button id="exerciseRemove" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}">Remove From Workout</button>
+              <button id="exerciseRemove" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}"><i class="material-icons">remove</i></button>
             </div>
           </div>
         </li>
       {% endfor %}
       {% else %}
-      <h5 id="noExercisesText">No Exercises :(</h5>
+      <h5 id="noExercisesText">No Exercises Added Yet</h5>
       {% endif %}
       </ul>
     </div>
   </div>
   <!-- Available exercises will come after this line -->
 
-  <div class="col s6">
-    <h3 class="blue-text darken-2">All Available Exercises</h3>
+  <div class="col s12 m6">
+    <h3 class="blue-text darken-2">Available Exercises</h3>
     <div>
       <ul id="availableExercises">
     {% if exercises.count %}
@@ -82,32 +90,57 @@
               <span class="card-title activator amber-text text-accent-2">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
-              <p>{{ exercise.sets }} sets</p>
-              <p>{{ exercise.reps }} reps</p>
+              <p>{{ exercise.sets }} Sets</p>
+              <p>{{ exercise.reps }} Reps</p>
             </div>
             
-            <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4">{{ exercise.name }}<i class="material-icons right">close</i></span>
+            <div class="card-reveal blue-grey lighten-4">
+              <span class="card-title grey-text text-darken-4 ">{{ exercise.name }}<i class="material-icons right">close</i></span>
               <p>{{ exercise.description }}</p>
-              <p>{{ exercise.sets }} sets</p>
-              <p>{{ exercise.reps }} reps</p>
+              <p>{{ exercise.sets }} Sets</p>
+              <p>{{ exercise.reps }} Reps</p>
             </div>
             <div class="card-action">
-              <button id="exerciseAdd" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}">Add To Workout</button>
+              <button id="exerciseAdd" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}"><i class="material-icons">add</i></button>
             </div>
           </div> 
         </li>
         {% endfor %}
         {% else %}
-        <h5 id="allExercisesText">All Exercises have been added to workout: {{ workout.name }}</h5>
+        <h5 id="allExercisesText">All Exercises Have Been Added To The Workout</h5>
         {% endif %}
       </ul>
     </div>
   </div>
 </div>
 
-<a class="btn blue darken-2" href="{% url 'workouts_delete' workout.id %}">Delete</a>
-<a class="btn blue darken-2" href="{% url 'workouts_update' workout.id %}">Edit</a>
-
+<section class="row">
+  <div class="stopwatch">
+    <div class="sw-circle">
+      <span class="time" id="display">00:00:00</span>
+    </div>
+  
+    <div class="controls">
+      <button class="sw-button buttonPlay blue darken-3 circle">
+        <img
+          id="playButton"
+          src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/play-button_opkxmt.svg"
+        />
+  
+        <img
+          id="pauseButton"
+          src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/pause-button_pinhpy.svg"
+        />
+      </button>
+  
+      <button class="sw-button buttonReset blue darken-3 circle">
+        <img
+          id="resetButton"
+          src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/reset-button_mdv6wf.svg"
+        />
+      </button>
+    </div>
+  </div>
+</section>
 
 {% endblock %}

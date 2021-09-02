@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from .forms import NewUserForm, ScheduleForm, WeatherForm, ModelForm
 from .models import Workout, Schedule, Exercise, Weather
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 import os
 import datetime
@@ -52,7 +54,7 @@ def get_weeks_workout(todays_date, user_id):
     weeks_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
     return weeks_workouts
  
-
+@login_required
 def home(request):
     user_id = request.user.id
     auto_schedule()
@@ -74,16 +76,10 @@ def home(request):
         }
     return render(request, 'home.html', context)
 
-
-class WeatherForm(ModelForm):
-    class Meta:
-        model = Weather
-        fields = ['city']
-
 def about(request):
     return render(request, 'about.html')
 
-class WorkoutCreate(CreateView):
+class WorkoutCreate(LoginRequiredMixin, CreateView):
     model = Workout
     fields = ['name', 'location']
 
@@ -91,11 +87,12 @@ class WorkoutCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+@login_required
 def workout_index(request):
     workout_list = Workout.objects.filter(user=request.user)
     return render(request, 'main_app/workout_list.html', {'workout_list': workout_list})
 
-class WorkoutDetail(DetailView):
+class WorkoutDetail(LoginRequiredMixin, DetailView):
     model = Workout
 
     def get_context_data(self, **kwargs):
@@ -103,6 +100,7 @@ class WorkoutDetail(DetailView):
         context['schedule_form'] = ScheduleForm()
         return context
 
+@login_required
 def workouts_detail(request, workout_id):
     workout = Workout.objects.get(id=workout_id)
     exercises = Exercise.objects.filter(user=request.user)
@@ -113,6 +111,7 @@ def workouts_detail(request, workout_id):
         'exercises': exercises_workout_doesnt_have
     })
 
+@login_required
 def assoc_exercise(request, workout_id, exercise_id):
     if request.is_ajax() and request.method == "POST":
         workout = Workout.objects.get(id=workout_id)
@@ -121,6 +120,7 @@ def assoc_exercise(request, workout_id, exercise_id):
         return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
     return JsonResponse({"error": ""}, status=400)
 
+@login_required
 def unassoc_exercise(request, workout_id, exercise_id):
     if request.is_ajax() and request.method == "POST":
         workout = Workout.objects.get(id=workout_id)
@@ -129,15 +129,15 @@ def unassoc_exercise(request, workout_id, exercise_id):
         return JsonResponse({"exercise": model_to_dict(exercise)}, status=200)
     return JsonResponse({"error": ""}, status=400)
 
-class WorkoutDelete(DeleteView):
+class WorkoutDelete(LoginRequiredMixin, DeleteView):
     model = Workout
     success_url = '/workouts/'
 
-class WorkoutUpdate(UpdateView):
+class WorkoutUpdate(LoginRequiredMixin, UpdateView):
     model = Workout
     fields = ['name', 'location']
 
-class ExerciseCreate(CreateView):
+class ExerciseCreate(LoginRequiredMixin, CreateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
 
@@ -145,21 +145,23 @@ class ExerciseCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+@login_required
 def exercise_index(request):
     exercise_list = Exercise.objects.filter(user=request.user)
     return render(request, 'main_app/exercise_list.html', {'exercise_list': exercise_list})
 
-class ExerciseDetail(DetailView):
+class ExerciseDetail(LoginRequiredMixin, DetailView):
     model = Exercise
 
-class ExerciseDelete(DeleteView):
+class ExerciseDelete(LoginRequiredMixin, DeleteView):
     model = Exercise
     success_url = '/exercises/'
 
-class ExerciseUpdate(UpdateView):
+class ExerciseUpdate(LoginRequiredMixin, UpdateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
 
+@login_required
 def update_weather(request):
     form = WeatherForm(request.POST)
     if form.is_valid():
@@ -182,6 +184,7 @@ def update_weather(request):
         )
     return redirect('home')
 
+@login_required
 def add_schedule(request, workout_id):
     if request.is_ajax() and request.method == "POST":
         form = ScheduleForm(request.POST)
@@ -195,6 +198,7 @@ def add_schedule(request, workout_id):
             return JsonResponse({"errors": errors}, status=400)
     return JsonResponse({"error": ""}, status=400)
 
+@login_required
 def delete_schedule(request, workout_id, schedule_id):
     if request.is_ajax() and request.method == "POST":
         sched = Schedule.objects.get(id=schedule_id)
