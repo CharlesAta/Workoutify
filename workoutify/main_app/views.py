@@ -3,15 +3,39 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .forms import UserForm, ScheduleForm
-from .models import Workout, Schedule, Exercise
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from .forms import UserForm, ScheduleForm, WeatherForm, ModelForm
+from .models import Workout, Schedule, Exercise, Weather
+import requests
+import os
+
+SECRET_KEY = os.environ['WEATHER_API_KEY']
+
+cities = {
+    'C': 5913490,
+    'S': 6141256,
+    'V': 6173331,
+    'T': 6167865,
+    'M': 6077246
+}
 
 # Create your views here.
 
+
 def home(request):
-    return render(request, 'home.html')
+    current_weather = Weather.objects.get(user=request.user)
+    
+    if (current_weather):
+        form = WeatherForm(initial={'city': current_weather.city})
+    else:
+        form = WeatherForm()
+    return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
+
+class WeatherForm(ModelForm):
+    class Meta:
+        model = Weather
+        fields = ['city']
 
 def about(request):
     return render(request, 'about.html')
@@ -41,7 +65,6 @@ def workouts_detail(request, workout_id):
     schedule_form = ScheduleForm()
     return render(request, 'main_app/workout_detail.html', {
         'workout': workout, 'schedule_form': schedule_form,
-        # Add the toys to be displayed
         'exercises': exercises_workout_doesnt_have
     })
 
@@ -91,6 +114,27 @@ class ExerciseUpdate(UpdateView):
     model = Exercise
     fields = ['name', 'description', 'sets', 'reps']
 
+def update_weather(request):
+    form = WeatherForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data
+        cities_id = cities[data['city']]
+        response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id={ cities_id }&appid={SECRET_KEY}')
+        weatherdata = response.json()
+        user_id = request.user
+        
+        obj, created = Weather.objects.update_or_create(
+            user = user_id,
+            defaults={
+                'city_id': cities_id,
+                'temperature':int(weatherdata['main']['temp'] - 273.15),
+                'description':weatherdata['weather'][0]['main'],
+                'city': data['city'],
+                'icon': f"https://openweathermap.org/img/wn/{weatherdata['weather'][0]['icon']}@2x.png"
+            }
+        )
+    return redirect('home')
+
 def add_schedule(request, workout_id):
     if request.is_ajax() and request.method == "POST":
         form = ScheduleForm(request.POST)
@@ -108,7 +152,6 @@ def delete_schedule(request, workout_id, schedule_id):
     if request.is_ajax() and request.method == "POST":
         sched = Schedule.objects.get(id=schedule_id)
         sched.delete()
-    # return redirect('workouts_detail', workout_id=workout_id)
         return JsonResponse({"result": "ok"}, status=200)
     
 def signup(request):

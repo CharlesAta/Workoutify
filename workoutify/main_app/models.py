@@ -24,7 +24,26 @@ class Workout(models.Model):
 
     def get_absolute_url(self):
         return reverse('workouts_detail', kwargs={'pk':self.id})
-    
+
+CITIES = (
+    ('C', 'Calgary'),
+    ('S', 'Saskatoon'),
+    ('V', 'Vancouver'),
+    ('T', 'Toronto'),
+    ('M', 'Montreal'),
+)
+
+class Weather(models.Model):
+    temperature = models.IntegerField()
+    description = models.CharField(max_length=100)
+    city = models.CharField(
+        max_length=1,
+        choices=CITIES,
+        default=CITIES[0][0]   
+    )
+    city_id = models.IntegerField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    icon = models.CharField(max_length=200)
 
 class Schedule(models.Model):
     date = models.DateField('workout date')

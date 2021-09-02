@@ -202,6 +202,7 @@ M.Timepicker.init(timeEl, {
 defaultTime: 'now',
 });
 
+
 let schedWorkoutBtn = document.getElementById('add-sched-workout-btn');
 
 schedWorkoutBtn.addEventListener('click', function() {
@@ -224,3 +225,4 @@ schedWorkoutBtn.addEventListener('click', function() {
 function getPosition(string, subString, index) {
     return string.split(subString, index).join(subString).length;
   }
+
