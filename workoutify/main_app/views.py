@@ -67,7 +67,7 @@ def get_weeks_workout(todays_date, user_id):
     #             weeks_workouts.append(workout)
     weeks_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
     return weeks_workouts
-
+ 
 
 def home(request):
     user_id = request.user.id
