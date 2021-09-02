@@ -1,19 +1,30 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Home</h1>
+<h1 class="blue-text darken-2">Home</h1>
 
-<form method='POST' action="{% url 'update_weather' %}">
-    {% csrf_token %} {{ weather_form.as_p }}
-  
-    <button type='submit'>Update Weather Location</button>
-</form>
+
 <div>
-    <ul>
-        <li>City: {{weather.get_city_display}}</li>
-        <li>Weather Description: {{weather.description}}</li>
-        <li>Temperature: {{weather.temperature}}</li>
-        <li><img src="{{weather.icon}}" alt=""></li>
-    </ul>
+    <div class="row">
+        <div class="col s12 m6">
+          <div class="card z-depth-3 blue-grey lighten-3 medium">
+            <div class="card-content white-text">
+              <span class="card-title amber-text text-accent-2 flow-text">{{weather.get_city_display}}'s Weather Today</span>
+              <ul>
+                <li class="flow-text">Currently: {{weather.description}}</li>
+                <li class="flow-text">Temperature: {{weather.temperature}} C</li>
+                <li><img class="responsive-img"  id="weather-icon" src="{{weather.icon}}" alt=""></li>
+            </ul>
+            </div>
+            <div class="card-action">
+              <form method='POST' action="{% url 'update_weather' %}">
+                {% csrf_token %} {{ weather_form.as_p }}
+              
+                <button class="btn blue darken-2 flow-text" type='submit'>Change Location</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 <script>
     let selectEl = document.getElementById('id_city');

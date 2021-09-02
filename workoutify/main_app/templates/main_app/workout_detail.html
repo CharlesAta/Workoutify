@@ -1,13 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1 id="workout" data-id="{{ workout.id }}" >{{ workout.name }}</h1>
-<h4>{{ workout.location }}</h4>
+
+<h1 id="workout" data-id="{{ workout.id }}"  class="amber-text text-accent-2">{{ workout.name }}</h1>
+<h4 class="blue-text darken-2">{{ workout.location }}</h4>
+
 
 <div class="col s6">
     <form id="scheduleFormAdd" method="post" data-url="{% url 'add_schedule' workout.id %}">
       {% csrf_token %}
       {{ schedule_form.as_p }}
-      <button id="add-sched-workout-btn" type="button" class="btn"> Schedule Workout</button>
+      <button id="add-sched-workout-btn" type="button" class="btn blue darken-2"> Schedule Workout</button>
     </form>
     <br>
 
@@ -21,7 +23,7 @@
             <td>{{schedule.date}}</td>
             <td>{{schedule.time}}</td>
             <td>
-              <button id="scheduleRemove" type="submit" class='btn' data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
+              <button id="scheduleRemove" type="submit" class='btn blue darken-2' data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
             </td>
           </tr>
         {% endfor %}
@@ -33,14 +35,14 @@
 <hr>
 <div class="row">
   <div class="col s6">
-    <h3>Current Workout Exercises</h3>
+    <h3 class="amber-text text-accent-2">Current Workout Exercises</h3>
     <div>
       <ul id="currentExercises">
     {% if workout.exercises.count %}
       {% for exercise in workout.exercises.all %}
         <li data-id="{{ exercise.id }}">
-          <div class="card">
-            <div class="card-content">
+          <div class="card blue-grey lighten-3">
+            <div class="card-content white-text">
               <span class="card-title activator grey-text text-darken-4">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
@@ -55,7 +57,7 @@
               <p>{{ exercise.reps }} reps</p>
             </div>
             <div class="card-action">
-              <button id="exerciseRemove" type="submit" class='btn' data-id="{{ exercise.id }}">Remove From Workout</button>
+              <button id="exerciseRemove" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}">Remove From Workout</button>
             </div>
           </div>
         </li>
@@ -69,14 +71,14 @@
   <!-- Available exercises will come after this line -->
 
   <div class="col s6">
-    <h3>All available Exercises</h3>
+    <h3 class="amber-text text-accent-2">All Available Exercises</h3>
     <div>
       <ul id="availableExercises">
     {% if exercises.count %}
         {% for exercise in exercises.all %}
         <li data-id="{{ exercise.id }}">
-          <div class="card">
-            <div class="card-content">
+          <div class="card blue-grey lighten-3">
+            <div class="card-content white-text">
               <span class="card-title activator grey-text text-darken-4">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
@@ -91,7 +93,7 @@
               <p>{{ exercise.reps }} reps</p>
             </div>
             <div class="card-action">
-              <button id="exerciseAdd" type="submit" class='btn' data-id="{{ exercise.id }}">Add To Workout</button>
+              <button id="exerciseAdd" type="submit" class="btn blue darken-2" data-id="{{ exercise.id }}">Add To Workout</button>
             </div>
           </div> 
         </li>
@@ -104,8 +106,8 @@
   </div>
 </div>
 
-<a href="{% url 'workouts_delete' workout.id %}">Delete</a>
-<a href="{% url 'workouts_update' workout.id %}">Edit</a>
+<a class="btn blue darken-2" href="{% url 'workouts_delete' workout.id %}">Delete</a>
+<a class="btn blue darken-2" href="{% url 'workouts_update' workout.id %}">Edit</a>
 
 
 {% endblock %}

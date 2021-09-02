@@ -1,12 +1,18 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>{{ exercise.name }}</h1>
-<h5>{{ exercise.description }}</h5>
-<h4>{{ exercise.sets }}</h4>
-<h4>{{ exercise.reps }}</h4>
 
 
-<a href="{% url 'exercises_delete' exercise.id %}">Delete</a>
-<a href="{% url 'exercises_update' exercise.id %}">Edit</a>
+<div class="card blue-grey lighten-3">
+    <div class="card-content white-text">
+      <span class="card-title amber-text text-accent-2">{{ exercise.name }}</span>
+      <hr>
+
+        <h5>{{ exercise.description }}</h5>
+        <h4>{{ exercise.sets }} set(s)</h4>
+        <h4>{{ exercise.reps }} rep(s)</h4>
+    </div>
+  </div>
+<a class="btn blue darken-2" href="{% url 'exercises_delete' exercise.id %}">Delete</a>
+<a class="btn blue darken-2" href="{% url 'exercises_update' exercise.id %}">Edit</a>
 
 {% endblock %}

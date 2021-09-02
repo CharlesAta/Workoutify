@@ -16,39 +16,57 @@
       type="text/css"
       href="{% static 'css/style.css' %}"
     />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script defer src="{% static 'js/script.js' %}"></script>
   </head>
   <body>
-    <header class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper">
-          <ul>
-            <li>
-              <a href="/" class="left brand-logo">Workoutify</a>
-            </li>
-          </ul>
-          <ul class="right">
-            <li><a href="{% url 'about' %}">About</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'exercises_create' %}">Add Exercise</a></li>
-            <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
-            <li><a href="{% url 'workouts_create' %}">Add Workout</a></li>
-            <li><a href="{% url 'workouts_index' %}">All Workouts</a></li>
-            <li><a href="{% url 'logout' %}">Log Out</a></li>
-            {% else %}
-            <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            <li><a href="{% url 'login' %}">Log In</a></li>
-            {% endif %}
-          </ul>
+    <header>
+
+      <div class="navbar-fixed">
+
+        <div class="row">
+          <nav>
+              <div class="nav-wrapper blue darken-2">
+                <div class="col s12">
+                    <a href="/" class="brand-logo">Workoutify</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                  <li><a href="{% url 'about' %}">About</a></li>
+                  {% if user.is_authenticated %}
+                  <li><a href="{% url 'exercises_create' %}">Add Exercise</a></li>
+                  <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
+                  <li><a href="{% url 'workouts_create' %}">Add Workout</a></li>
+                  <li><a href="{% url 'workouts_index' %}">All Workouts</a></li>
+                  <li><a href="{% url 'logout' %}">Log Out</a></li>
+                  {% else %}
+                  <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                  <li><a href="{% url 'login' %}">Log In</a></li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
         </div>
-      </nav>
+      </div>
+          <ul class="sidenav" id="mobile-demo">
+            <li><a href="{% url 'about' %}">About</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'exercises_create' %}">Add Exercise</a></li>
+              <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
+              <li><a href="{% url 'workouts_create' %}">Add Workout</a></li>
+              <li><a href="{% url 'workouts_index' %}">All Workouts</a></li>
+              <li><a href="{% url 'logout' %}">Log Out</a></li>
+              {% else %}
+              <li><a href="{% url 'signup' %}">Sign Up</a></li>
+              <li><a href="{% url 'login' %}">Log In</a></li>
+              {% endif %}
+        </ul>
+    </div>
     </header>
     <main class="container">{% block content %} {% endblock %}</main>
+
+    
   </body>
 </html>
