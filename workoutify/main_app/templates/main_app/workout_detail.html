@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
 
-<h1 id="workout" data-id="{{ workout.id }}"  class="amber-text text-accent-2">{{ workout.name }}</h1>
+<h1 id="workout" data-id="{{ workout.id }}"  class="black-text">{{ workout.name }}</h1>
 <h4 class="blue-text darken-2">{{ workout.location }}</h4>
 
 
@@ -35,15 +35,15 @@
 <hr>
 <div class="row">
   <div class="col s6">
-    <h3 class="amber-text text-accent-2">Current Workout Exercises</h3>
+    <h3 class="blue-text darken-2">Current Workout</h3>
     <div>
       <ul id="currentExercises">
     {% if workout.exercises.count %}
       {% for exercise in workout.exercises.all %}
         <li data-id="{{ exercise.id }}">
-          <div class="card blue-grey lighten-3">
+          <div class="card blue-grey lighten-1">
             <div class="card-content white-text">
-              <span class="card-title activator grey-text text-darken-4">
+              <span class="card-title activator amber-text text-accent-2">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
               <p>{{ exercise.sets }} sets</p>
@@ -71,15 +71,15 @@
   <!-- Available exercises will come after this line -->
 
   <div class="col s6">
-    <h3 class="amber-text text-accent-2">All Available Exercises</h3>
+    <h3 class="blue-text darken-2">All Available Exercises</h3>
     <div>
       <ul id="availableExercises">
     {% if exercises.count %}
         {% for exercise in exercises.all %}
         <li data-id="{{ exercise.id }}">
-          <div class="card blue-grey lighten-3">
+          <div class="card blue-grey lighten-1">
             <div class="card-content white-text">
-              <span class="card-title activator grey-text text-darken-4">
+              <span class="card-title activator amber-text text-accent-2">
                 {{ exercise.name }}<i class="material-icons right">more_vert</i>
               </span>
               <p>{{ exercise.sets }} sets</p>

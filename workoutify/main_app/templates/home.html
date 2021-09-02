@@ -6,12 +6,12 @@
 <div>
     <div class="row">
         <div class="col s12 m6">
-          <div class="card z-depth-3 blue-grey lighten-3 medium">
+          <div class="card z-depth-3 blue-grey lighten-1 medium">
             <div class="card-content white-text">
-              <span class="card-title amber-text text-accent-2 flow-text">{{weather.get_city_display}}'s Weather Today</span>
+              <span class="card-title amber-text text-accent-2 flow-text">{{weather.get_city_display}}'s Weather</span>
               <ul>
                 <li class="flow-text">Currently: {{weather.description}}</li>
-                <li class="flow-text">Temperature: {{weather.temperature}} C</li>
+                <li class="flow-text">{{weather.temperature}} °</li>
                 <li><img class="responsive-img"  id="weather-icon" src="{{weather.icon}}" alt=""></li>
             </ul>
             </div>

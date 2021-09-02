@@ -39,9 +39,9 @@ def auto_weather(user_id):
 
 def home(request):
     user_id = request.user.id
-    todaysdate = datetime.date.today()
-    todaysworkout = Workout.objects.filter(user=user_id)
-    print(todaysworkout)
+    # todaysdate = datetime.date.today()
+    # todaysworkout = Workout.objects.filter(user=user_id)
+    # print(todaysworkout)
     try:
         current_weather = Weather.objects.get(user=user_id)
         auto_weather(user_id)

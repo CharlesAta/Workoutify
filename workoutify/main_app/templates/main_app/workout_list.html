@@ -1,10 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1 class="amber-text text-accent-2">All Workouts</h1>
+<h1 class="blue-text darken-2">All Workouts</h1>
 
 {% for workout in workout_list %}
 <a href="{% url 'workouts_detail' workout.id %}">
-  <div class="card blue-grey lighten-3">
+  <div class="card blue-grey lighten-1">
     <div class="card-content white-text">
       <span class="card-title amber-text text-accent-2">{{ workout.name }}</span>
       <p>Location: {{ workout.location }}</p>
