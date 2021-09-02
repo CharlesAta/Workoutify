@@ -44,6 +44,7 @@ class Weather(models.Model):
     city_id = models.IntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     icon = models.CharField(max_length=200)
+    date = models.DateField(max_length=100)
 
 class Schedule(models.Model):
     date = models.DateField('workout date')
@@ -56,6 +57,6 @@ class Schedule(models.Model):
         return f"Workout scheduled for {self.date} at {self.time}"
     
     class Meta:
-        ordering = ['-date']
+        ordering = ['date', 'time']
 
 
