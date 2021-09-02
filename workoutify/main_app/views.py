@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .forms import UserForm, ScheduleForm, WeatherForm, ModelForm
+from .forms import NewUserForm, ScheduleForm, WeatherForm, ModelForm
 from .models import Workout, Schedule, Exercise, Weather
 import requests
 import os
@@ -24,13 +24,13 @@ cities = {
 
 
 def home(request):
-    current_weather = Weather.objects.get(user=request.user)
-    
-    if (current_weather):
+    try:
+        current_weather = Weather.objects.get(user=request.user.id)
         form = WeatherForm(initial={'city': current_weather.city})
-    else:
+        return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
+    except Weather.DoesNotExist:
         form = WeatherForm()
-    return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
+        return render(request, 'home.html', {'weather_form': form})
 
 class WeatherForm(ModelForm):
     class Meta:
@@ -157,13 +157,13 @@ def delete_schedule(request, workout_id, schedule_id):
 def signup(request):
     error_message = ''
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
         else:
             error_message = 'Invalid sign up - try again'
-    form = UserForm()
+    form = NewUserForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
