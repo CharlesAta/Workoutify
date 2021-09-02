@@ -2,13 +2,19 @@
 
 <h1 class="blue-text darken-2">All Workouts</h1>
 
-{% for workout in workout_list %}
+{% if workout_list %} {% for workout in workout_list %}
 <a href="{% url 'workouts_detail' workout.id %}">
   <div class="card blue-grey lighten-1">
     <div class="card-content white-text">
-      <span class="card-title amber-text text-accent-2">{{ workout.name }}</span>
+      <span class="card-title amber-text text-accent-2"
+        >{{ workout.name }}</span
+      >
       <p>Location: {{ workout.location }}</p>
     </div>
   </div>
 </a>
-{% endfor %} {% endblock %}
+{% endfor %} {% else %}
+<h3>
+  <a href="{% url 'workouts_create' %}"> Create a workout</a> to get started!
+</h3>
+{% endif %} {% endblock %}

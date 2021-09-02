@@ -35,9 +35,9 @@
                 <ul class="right hide-on-med-and-down">
                   <li><a href="{% url 'about' %}">About</a></li>
                   {% if user.is_authenticated %}
-                  <li><a href="{% url 'exercises_create' %}">Add Exercise</a></li>
+                  <li><a href="{% url 'exercises_create' %}">Create Exercise</a></li>
                   <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
-                  <li><a href="{% url 'workouts_create' %}">Add Workout</a></li>
+                  <li><a href="{% url 'workouts_create' %}">Create Workout</a></li>
                   <li><a href="{% url 'workouts_index' %}">All Workouts</a></li>
                   <li><a href="{% url 'logout' %}">Log Out</a></li>
                   {% else %}
@@ -53,9 +53,9 @@
           <ul class="sidenav" id="mobile-demo">
             <li><a href="{% url 'about' %}">About</a></li>
               {% if user.is_authenticated %}
-              <li><a href="{% url 'exercises_create' %}">Add Exercise</a></li>
+              <li><a href="{% url 'exercises_create' %}">Create Exercise</a></li>
               <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
-              <li><a href="{% url 'workouts_create' %}">Add Workout</a></li>
+              <li><a href="{% url 'workouts_create' %}">Create Workout</a></li>
               <li><a href="{% url 'workouts_index' %}">All Workouts</a></li>
               <li><a href="{% url 'logout' %}">Log Out</a></li>
               {% else %}
