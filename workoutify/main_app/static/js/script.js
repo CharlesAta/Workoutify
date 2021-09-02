@@ -27,13 +27,15 @@ $(document).ready(function () {
             type: 'post',
             success: function(response) {
                 let dateString = response.schedule.date
-  
                 let time = response.schedule.time;
                 let hours = parseInt(time.slice(0, time.indexOf(':')));
                 let suffix = ""
-                if (hours < 12){
+                if (hours < 12 && hours > 0){
                     suffix = "a.m.";
-                } else if (hours == 12) { 
+                } else if (hours == 0) { 
+                    hours = 12;
+                    suffix = "a.m.";
+                } else if (hours == 12) {
                     suffix = "p.m.";
                 } else {
                     hours -= 12;
@@ -65,7 +67,6 @@ $(document).ready(function () {
 
         let scheduleId = $(this).data('id');
         let workoutId = $('#workout').data('id');
-        
 
         $.ajax({
             url: `/workouts/${workoutId}/delete_schedule/${scheduleId}/`,
@@ -76,18 +77,14 @@ $(document).ready(function () {
             },
             type: 'post',
             dataType: 'json',
-            success: function(response) {
-                console.log(response.result)
+            success: function() {
                 $(`#schedRow[data-id="${scheduleId}"]`).remove();
-                
-
             }
         })
     })
 
     $('#availableExercises').on('click','button#exerciseAdd', function () {
 
-        console.log("being seen add")
         let exerciseId = $(this).data('id');
         let workoutId = $('#workout').data('id');
 
@@ -124,12 +121,14 @@ $(document).ready(function () {
                         </div>
                     </li>`)
 
-                $('#noExercisesText').remove();
                 $(`#availableExercises li[data-id="${ response.exercise.id }"]`).remove();
 
-                // if(!(document.querySelector("#availableExercises li"))){
-                //     $('#availableExercises').append('<li id="#allExercisesText"><h5>All Exercises have been added to the workout</h5></li>')
-                // }
+                if (!(document.querySelectorAll("#availableExercises li").length)){
+                    $('#availableExercises').prepend('<h5 id="allExercisesText">All Exercises have been added to the workout</h5>')
+                }
+
+                $('#noExercisesText').remove();
+                
             }
             
         })
@@ -137,7 +136,6 @@ $(document).ready(function () {
 
     $('#currentExercises').on('click', 'button#exerciseRemove', function () {
 
-        console.log("being seen remove")
         let exerciseId = $(this).data('id');
         let workoutId = $('#workout').data('id');
 
@@ -176,15 +174,14 @@ $(document).ready(function () {
                         </div>
                     </li>`);
                 
-                $('#allExercisesText').remove();
-                
                 $(`#currentExercises li[data-id="${ response.exercise.id }"]`).remove();
 
-                // if(!(document.querySelector("#currentExercises li") && !(document.querySelector("#currentExercises li#allExercisesText")))) {
-                //     $('#currentExercises').append('<li id="#noExercisesText"><h5>No Exercises :(</h5></li>')
-                // } else {
-                    
-                // }
+
+                if (!((document.querySelectorAll("#currentExercises li")).length)){
+                    $('#currentExercises').prepend('<h5 id="noExercisesText">No Exercises :(</h5>')
+                } 
+
+                $('#allExercisesText').remove();
                 
             }
         })
