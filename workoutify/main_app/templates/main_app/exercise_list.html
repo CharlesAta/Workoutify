@@ -1,16 +1,21 @@
 {% extends 'base.html' %} {% block content %}
 
 <h1 class="amber-text text-accent-2">All Exercises</h1>
-
-{% for exercise in exercise_list %}
+{% if exercise_list %} {% for exercise in exercise_list %}
 <a href="{% url 'exercises_detail' exercise.id %}">
   <div class="card blue-grey lighten-3">
     <div class="card-content white-text">
-      <span class="card-title amber-text text-accent-2">{{ exercise.name }}</span>
+      <span class="card-title amber-text text-accent-2"
+        >{{ exercise.name }}</span
+      >
       <p>Description: {{ exercise.description }}</p>
       <p>Sets: {{ exercise.sets }}</p>
       <p>Reps: {{ exercise.reps }}</p>
     </div>
   </div>
 </a>
-{% endfor %} {% endblock %}
+{% endfor %} {% else %}
+<h3>
+  <a href="{% url 'exercises_create' %}"> Create an exercise</a> to get started!
+</h3>
+{% endif %}{% endblock %}

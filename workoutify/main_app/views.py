@@ -36,20 +36,60 @@ def auto_weather(user_id):
         weather.date = datetime.date.today()
         weather.save()
 
+def auto_schedule():
+    try:
+        Schedule.objects.filter(date__lt=datetime.date.today()).delete()
+    except Schedule.DoesNotExist:
+        pass
+
+def get_todays_workout(todays_date, user_id):
+    # todays_schedules = Schedule.objects.filter(date=todays_date)
+    # user_workouts = Workout.objects.filter(user=user_id)
+    # today_workouts = []
+    # for schedule in todays_schedules:      
+    #     for workout in user_workouts:
+    #         if workout == schedule.workout:
+    #             today_workouts.append(workout)
+    print(Schedule.objects.filter(date=todays_date).values())
+    todays_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date=todays_date).values("workout_id"))
+    print(todays_workouts)
+    return todays_workouts
+
+def get_weeks_workout(todays_date, user_id):
+    start_date = todays_date + datetime.timedelta(days=1)
+    end_date = start_date + datetime.timedelta(days=6)
+    # weeks_schedules = Schedule.objects.filter(date__range=[todays_date, end_date])
+    # user_workouts = Workout.objects.filter(user=user_id)
+    # weeks_workouts = []
+    # for schedule in weeks_schedules:      
+    #     for workout in user_workouts:
+    #         if workout == schedule.workout:
+    #             weeks_workouts.append(workout)
+    weeks_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
+    return weeks_workouts
+
 
 def home(request):
     user_id = request.user.id
-    todaysdate = datetime.date.today()
-    todaysworkout = Workout.objects.filter(user=user_id)
-    print(todaysworkout)
-    try:
-        current_weather = Weather.objects.get(user=user_id)
+    auto_schedule()
+    todays_date = datetime.date.today()
+    todays_workouts = get_todays_workout(todays_date, user_id)
+    weeks_workouts = get_weeks_workout(todays_date, user_id)
+    current_weather = Weather.objects.filter(user=user_id)
+    if current_weather:
         auto_weather(user_id)
-        form = WeatherForm(initial={'city': current_weather.city})
-        return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
-    except Weather.DoesNotExist:
+        form = WeatherForm(initial={'city': current_weather[0].city})
+        current_weather = current_weather[0]
+    else:
         form = WeatherForm()
-        return render(request, 'home.html', {'weather_form': form})
+        current_weather = None
+
+    context = {
+        'weather_form': form, 'weather': current_weather,
+        'todays_workouts': todays_workouts, 'weeks_workouts': weeks_workouts
+        }
+    return render(request, 'home.html', context)
+
 
 class WeatherForm(ModelForm):
     class Meta:
@@ -67,8 +107,9 @@ class WorkoutCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class WorkoutList(ListView):
-    model = Workout
+def workout_index(request):
+    workout_list = Workout.objects.filter(user=request.user)
+    return render(request, 'main_app/workout_list.html', {'workout_list': workout_list})
 
 class WorkoutDetail(DetailView):
     model = Workout
@@ -80,7 +121,8 @@ class WorkoutDetail(DetailView):
 
 def workouts_detail(request, workout_id):
     workout = Workout.objects.get(id=workout_id)
-    exercises_workout_doesnt_have = Exercise.objects.exclude(id__in = workout.exercises.all().values_list('id'))
+    exercises = Exercise.objects.filter(user=request.user)
+    exercises_workout_doesnt_have = exercises.exclude(id__in = workout.exercises.all().values_list('id'))
     schedule_form = ScheduleForm()
     return render(request, 'main_app/workout_detail.html', {
         'workout': workout, 'schedule_form': schedule_form,
@@ -119,8 +161,9 @@ class ExerciseCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class ExerciseList(ListView):
-    model = Exercise
+def exercise_index(request):
+    exercise_list = Exercise.objects.filter(user=request.user)
+    return render(request, 'main_app/exercise_list.html', {'exercise_list': exercise_list})
 
 class ExerciseDetail(DetailView):
     model = Exercise

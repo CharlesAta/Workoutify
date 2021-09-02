@@ -23,7 +23,7 @@ class Workout(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('workouts_detail', kwargs={'pk':self.id})
+        return reverse('workouts_detail', kwargs={'workout_id':self.id})
 
 CITIES = (
     ('C', 'Calgary'),
