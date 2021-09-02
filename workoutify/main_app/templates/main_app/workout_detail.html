@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>{{ workout.name }}</h1>
-<h4>{{ workout.location }}</h4>
+<h1 class="amber-text text-accent-2">{{ workout.name }}</h1>
+<h4 class="blue-text darken-2">{{ workout.location }}</h4>
 
 <div class="col s6">
     <form action="{% url 'add_schedule' workout.id %}" method="post">
       {% csrf_token %}
       {{ schedule_form.as_p }}
-      <input id="sched-workout-btn" type="submit" class="btn" value="Schedule Workout">
+      <input id="sched-workout-btn" type="submit" class="btn blue darken-2" value="Schedule Workout">
     </form>
     <br>
 
@@ -23,7 +23,7 @@
             <td>
               <form method='POST' action="{% url 'delete_schedule' workout.id schedule.id %}">
                 {% csrf_token %}
-                <button type="submit" class='btn'>Delete</button>
+                <button type="submit" class='btn blue darken-2'>Delete</button>
               </form>
             </td>
           </tr>
@@ -36,28 +36,28 @@
 <hr>
 <div class="row">
   <div class="col s6">
-    <h3>Current Workout Exercises</h3>
+    <h3 class="amber-text text-accent-2">Current Workout Exercises</h3>
     {% if workout.exercises.count %}
       {% for exercise in workout.exercises.all %}
-        <div class="card">
-          <div class="card-content">
+        <div class="card blue-grey lighten-3">
+          <div class="card-content white-text">
             <span class="card-title activator grey-text text-darken-4">
                {{ exercise.name }}<i class="material-icons right">more_vert</i>
             </span>
-            <p>{{ exercise.sets }} sets</p>
-            <p>{{ exercise.reps }} reps</p>
+            <p>{{ exercise.sets }} set(s)</p>
+            <p>{{ exercise.reps }} rep(s)</p>
           </div>
           
           <div class="card-reveal">
             <span class="card-title grey-text text-darken-4">{{ exercise.name }}<i class="material-icons right">close</i></span>
             <p>{{ exercise.description }}</p>
-            <p>{{ exercise.sets }} sets</p>
-            <p>{{ exercise.reps }} reps</p>
+            <p>{{ exercise.sets }} set(s)</p>
+            <p>{{ exercise.reps }} rep(s)</p>
           </div>
           <div class="card-action">
             <form action="{% url 'unassoc_exercise' workout.id exercise.id %}" method="POST">
               {% csrf_token %}
-              <button type='submit' class='btn'>Remove Exercise</button>
+              <button type='submit' class='btn blue darken-2'>Remove Exercise</button>
             </form>
           </div>
         </div> 
@@ -69,11 +69,11 @@
   <!-- Available exercises will come after this line -->
 
   <div class="col s6">
-    <h3>All available Exercises</h3>
+    <h3 class="amber-text text-accent-2">All Available Exercises</h3>
     {% if exercises.count %}
       {% for exercise in exercises.all %}
-        <div class="card">
-          <div class="card-content">
+        <div class="card blue-grey lighten-3">
+          <div class="card-content white-text">
             <span class="card-title activator grey-text text-darken-4">
                {{ exercise.name }}<i class="material-icons right">more_vert</i>
             </span>
@@ -90,7 +90,7 @@
           <div class="card-action">
             <form action="{% url 'assoc_exercise' workout.id exercise.id %}" method="POST">
               {% csrf_token %}
-              <button type='submit' class='btn'>Add Exercise</button>
+              <button type='submit' class='btn blue darken-2'>Add Exercise</button>
             </form>
           </div>
 
@@ -102,8 +102,8 @@
   </div>
 </div>
 
-<a href="{% url 'workouts_delete' workout.id %}">Delete</a>
-<a href="{% url 'workouts_update' workout.id %}">Edit</a>
+<a class="btn blue darken-2" href="{% url 'workouts_delete' workout.id %}">Delete</a>
+<a class="btn blue darken-2" href="{% url 'workouts_update' workout.id %}">Edit</a>
 
 
 

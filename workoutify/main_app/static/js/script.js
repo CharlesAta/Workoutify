@@ -30,3 +30,8 @@ if(typeof schedWorkoutBtn !== 'undefined' && schedWorkoutBtn !== null){
         timeEl.value = two_four_clock;
     })
 }
+
+
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+});
