@@ -9,6 +9,8 @@ from .forms import NewUserForm, ScheduleForm, WeatherForm, ModelForm
 from .models import Workout, Schedule, Exercise, Weather
 import requests
 import os
+import datetime
+
 
 SECRET_KEY = os.environ['WEATHER_API_KEY']
 
@@ -22,10 +24,27 @@ cities = {
 
 # Create your views here.
 
+def auto_weather(user_id):
+    weather = Weather.objects.get(user=user_id)
+    if weather.date != datetime.date.today():
+        cities_id = weather.city_id
+        response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?id={ cities_id }&appid={SECRET_KEY}')
+        weatherdata = response.json()
+        weather.temperature = int(weatherdata['main']['temp'] - 273.15)
+        weather.description = weatherdata['weather'][0]['main']
+        weather.icon = f"https://openweathermap.org/img/wn/{weatherdata['weather'][0]['icon']}@2x.png"
+        weather.date = datetime.date.today()
+        weather.save()
+
 
 def home(request):
+    user_id = request.user.id
+    todaysdate = datetime.date.today()
+    todaysworkout = Workout.objects.filter(user=user_id)
+    print(todaysworkout)
     try:
-        current_weather = Weather.objects.get(user=request.user.id)
+        current_weather = Weather.objects.get(user=user_id)
+        auto_weather(user_id)
         form = WeatherForm(initial={'city': current_weather.city})
         return render(request, 'home.html', {'weather_form': form, 'weather': current_weather})
     except Weather.DoesNotExist:
@@ -130,7 +149,8 @@ def update_weather(request):
                 'temperature':int(weatherdata['main']['temp'] - 273.15),
                 'description':weatherdata['weather'][0]['main'],
                 'city': data['city'],
-                'icon': f"https://openweathermap.org/img/wn/{weatherdata['weather'][0]['icon']}@2x.png"
+                'icon': f"https://openweathermap.org/img/wn/{weatherdata['weather'][0]['icon']}@2x.png",
+                'date': datetime.date.today()
             }
         )
     return redirect('home')
@@ -167,3 +187,6 @@ def signup(request):
     form = NewUserForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
+    

@@ -204,24 +204,24 @@ defaultTime: 'now',
 
 
 let schedWorkoutBtn = document.getElementById('add-sched-workout-btn');
-
-schedWorkoutBtn.addEventListener('click', function() {
-    let time = timeEl.value;
-    let hours = parseInt(time.slice(0, time.indexOf(':')));
-    if (time.endsWith("AM")){
-        if (hours === 12){
-            hours = 0;
+if (schedWorkoutBtn) {
+    schedWorkoutBtn.addEventListener('click', function() {
+        let time = timeEl.value;
+        let hours = parseInt(time.slice(0, time.indexOf(':')));
+        if (time.endsWith("AM")){
+            if (hours === 12){
+                hours = 0;
+            }
+        } else {
+            if (hours < 12){
+                hours += 12;
+            }
         }
-    } else {
-        if (hours < 12){
-            hours += 12;
-        }
-    }
-    let minutes = time.slice(time.indexOf(':'), time.indexOf(' '));
-    let two_four_clock = `${hours}${minutes}`
-    timeEl.value = two_four_clock;
-})
-
+        let minutes = time.slice(time.indexOf(':'), time.indexOf(' '));
+        let two_four_clock = `${hours}${minutes}`
+        timeEl.value = two_four_clock;
+    })
+}
 function getPosition(string, subString, index) {
     return string.split(subString, index).join(subString).length;
   }
