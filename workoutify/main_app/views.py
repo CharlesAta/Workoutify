@@ -43,28 +43,12 @@ def auto_schedule():
         pass
 
 def get_todays_workout(todays_date, user_id):
-    # todays_schedules = Schedule.objects.filter(date=todays_date)
-    # user_workouts = Workout.objects.filter(user=user_id)
-    # today_workouts = []
-    # for schedule in todays_schedules:      
-    #     for workout in user_workouts:
-    #         if workout == schedule.workout:
-    #             today_workouts.append(workout)
-    print(Schedule.objects.filter(date=todays_date).values())
     todays_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date=todays_date).values("workout_id"))
-    print(todays_workouts)
     return todays_workouts
 
 def get_weeks_workout(todays_date, user_id):
     start_date = todays_date + datetime.timedelta(days=1)
     end_date = start_date + datetime.timedelta(days=6)
-    # weeks_schedules = Schedule.objects.filter(date__range=[todays_date, end_date])
-    # user_workouts = Workout.objects.filter(user=user_id)
-    # weeks_workouts = []
-    # for schedule in weeks_schedules:      
-    #     for workout in user_workouts:
-    #         if workout == schedule.workout:
-    #             weeks_workouts.append(workout)
     weeks_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
     return weeks_workouts
  
