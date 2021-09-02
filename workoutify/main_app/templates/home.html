@@ -21,7 +21,7 @@
               {% endif %}
             </div>
             <div class="card-action">
-              <form method='POST' action="{% url 'update_weather' %}">
+              <form id="weather-card" method='POST' action="{% url 'update_weather' %}">
                 {% csrf_token %} {{ weather_form.as_p }}
               
                 <button class="btn blue darken-2 flow-text" type='submit'>Change Location</button>
@@ -40,7 +40,7 @@
   {% if todays_workouts %} {% for workout in todays_workouts %}
   <div class="col s12 m6 l3">
     <a href="{% url 'workouts_detail' workout.id %}">
-      <div class="card z-depth-3 blue-grey lighten-3">
+      <div class="card hoverable z-depth-3 blue-grey lighten-1">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text center">
             {{ workout.name }}</span
@@ -52,7 +52,7 @@
     {% endfor %} {% else %}
     <div class="col s12 m6 l3"></div>
     <a href="{% url 'workouts_index' %}">
-      <div class="card z-depth-3 blue-grey lighten-3">
+      <div class="card hoverable z-depth-3 blue-grey lighten-1">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text">
             No Workouts Today - Schedule One Of Your Existing Workouts!</span
@@ -70,7 +70,7 @@
   {% if weeks_workouts %} {% for workout in weeks_workouts %}
   <div class="col s12 m6 l3">
     <a href="{% url 'workouts_detail' workout.id %}">
-      <div class="card z-depth-3 blue-grey lighten-3">
+      <div class="card hoverable z-depth-3 blue-grey lighten-1">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text center">
             {{ workout.name }}</span
@@ -82,7 +82,7 @@
     {% endfor %} {% else %}
     <div class="col s12 m6 l3"></div>
     <a href="{% url 'workouts_index' %}">
-      <div class="card z-depth-3 blue-grey lighten-3">
+      <div class="card hoverable z-depth-3 blue-grey lighten-1">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text">
             No Workouts For The Week - Schedule One Of Your Existing Workouts!</span
