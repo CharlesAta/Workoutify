@@ -19,7 +19,6 @@ jmespath==0.10.0
 lib50==2.0.9
 markdown2==2.4.0
 pexpect==4.8.0
-prelude==5.2.0
 psycopg2==2.9.1
 psycopg2-binary==2.9.1
 ptyprocess==0.7.0
