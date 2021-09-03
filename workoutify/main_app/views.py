@@ -41,7 +41,7 @@ def auto_weather(user_id):
 
 def auto_schedule():
     try:
-        Schedule.objects.filter(date__lt=datetime.date.today() - datetime.timedelta(days=1)).delete()
+        Schedule.objects.filter(date__lte=datetime.date.today() - datetime.timedelta(days=1)).delete()
     except Schedule.DoesNotExist:
         pass
 
