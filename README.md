@@ -7,7 +7,9 @@ Workoutify is the one-stop app for all your workout creation and scheduling need
 Build your workout with custom exercises and add them to your schedule to keep you on track of your fitness goals.
 
 Ever forget you have a workout? Stay on top of it all with Workoutify!
+
 Ever need to remember what you need for a specific exercise? Describe it in Workoutify!
+
 Ever want to know the weather before you head out to get SWOLE? Stay dry with Workoutify (unless you workout in the rain, then great job we're extremely proud of you)!
 
 ## :weight_lifting_woman: Screenshots
