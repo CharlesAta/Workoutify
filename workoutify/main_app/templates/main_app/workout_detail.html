@@ -28,7 +28,7 @@
       <tbody id="scheduleTableBody">
         {% for schedule in workout.schedules.all %}
           <tr id="schedRow" data-id="{{ schedule.id }}">
-            <td class="center">{{schedule.date | date:"D, M. d, Y"}} - {{schedule.time}}</td>
+            <td class="center">{{schedule.date}} - {{schedule.time}}</td>
             <td>
               <button id="scheduleRemove" type="submit" class="btn-floating btn-small blue lighten-1" data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
             </td>
