@@ -55,6 +55,7 @@ ul {
   overflow: auto;
 }
 
+/* Source: https://github.com/tinloof/gold-stopwatch */
 .stopwatch {
   display: grid;
   justify-items: center;
@@ -107,4 +108,12 @@ ul {
 
 .workout-options {
   margin-top: 40px;
+}
+
+#delete-workout-btn {
+  margin: 10px;
+}
+
+#edit-workout-btn {
+  margin: 10px;
 }

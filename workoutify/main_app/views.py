@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 import os
 import datetime
+from itertools import chain
 
 
 SECRET_KEY = os.environ['WEATHER_API_KEY']
@@ -40,20 +41,34 @@ def auto_weather(user_id):
 
 def auto_schedule():
     try:
-        Schedule.objects.filter(date__lt=datetime.date.today()).delete()
+        Schedule.objects.filter(date__lt=datetime.date.today() - datetime.timedelta(days=1)).delete()
     except Schedule.DoesNotExist:
         pass
 
 def get_todays_workout(todays_date, user_id):
-    todays_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date=todays_date).values("workout_id"))
+    # todays_workouts = Workout.objects.filter(user=user_id, id__in = Schedule.objects.filter(date=todays_date).values("workout_id"))
+    todays_workouts = Schedule.objects.filter(workout__in=Workout.objects.filter(user=user_id).values("id")).select_related("workout").filter(date=todays_date)
+    # print(schedules)
+    # for schedule in schedules:
+    #     print(schedule.workout.name)
+    #     print(schedule.workout.location)
+    #     print(schedule.date)
+    #     print(schedule.time)
     return todays_workouts
 
 def get_weeks_workout(todays_date, user_id):
     start_date = todays_date + datetime.timedelta(days=1)
     end_date = start_date + datetime.timedelta(days=6)
-    weeks_workouts = Workout.objects.filter(id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
+    # weeks_workouts = Workout.objects.filter(user=user_id, id__in = Schedule.objects.filter(date__range=[start_date, end_date]).values("workout_id"))
+    weeks_workouts = Schedule.objects.filter(workout__in=Workout.objects.filter(user=user_id).values("id")).select_related("workout").filter(date__range=[start_date, end_date])
+    # print(schedules)
+    # for schedule in schedules:
+    #     print(schedule.workout.name)
+    #     print(schedule.workout.location)
+    #     print(schedule.date)
+    #     print(schedule.time)
     return weeks_workouts
- 
+
 @login_required
 def home(request):
     user_id = request.user.id

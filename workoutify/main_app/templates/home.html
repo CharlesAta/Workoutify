@@ -39,23 +39,24 @@
 <div class="row">
   {% if todays_workouts %} {% for workout in todays_workouts %}
   <div class="col s12 m6 l3">
-    <a href="{% url 'workouts_detail' workout.id %}">
+    <a href="{% url 'workouts_detail' workout.workout.id %}">
       <div class="card z-depth-3 blue-grey lighten-3">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text center">
-            {{ workout.name }}</span
+            {{ workout.workout.name }}</span
           >
+          <p class="center">{{ workout.time }}</p>
         </div>
       </div>
     </a>
   </div>
     {% endfor %} {% else %}
-    <div class="col s12 m6 l3"></div>
+    <div class="col s12 m6 l3">
     <a href="{% url 'workouts_index' %}">
       <div class="card z-depth-3 blue-grey lighten-3">
         <div class="card-content white-text">
-          <span class="card-title amber-text text-accent-2 flow-text">
-            No Workouts Today - Schedule One Of Your Existing Workouts!</span
+          <span class="card-title amber-text text-accent-2 flow-text center">
+            No Workouts Today - Schedule One !</span
           >
         </div>
       </div>
@@ -69,23 +70,24 @@
 <div class="row">
   {% if weeks_workouts %} {% for workout in weeks_workouts %}
   <div class="col s12 m6 l3">
-    <a href="{% url 'workouts_detail' workout.id %}">
+    <a href="{% url 'workouts_detail' workout.workout.id %}">
       <div class="card z-depth-3 blue-grey lighten-3">
         <div class="card-content white-text">
           <span class="card-title amber-text text-accent-2 flow-text center">
-            {{ workout.name }}</span
+            {{ workout.workout.name }}</span
           >
+          <p class="center">{{ workout.date | date:"D, M. d, Y" }} - {{ workout.time }}</p>
         </div>
       </div>
     </a>
   </div>
     {% endfor %} {% else %}
-    <div class="col s12 m6 l3"></div>
+    <div class="col s12 m6 l3">
     <a href="{% url 'workouts_index' %}">
       <div class="card z-depth-3 blue-grey lighten-3">
         <div class="card-content white-text">
-          <span class="card-title amber-text text-accent-2 flow-text">
-            No Workouts For The Week - Schedule One Of Your Existing Workouts!</span
+          <span class="card-title amber-text text-accent-2 flow-text center">
+            No Workouts For The Week - Schedule One !</span
           >
         </div>
       </div>

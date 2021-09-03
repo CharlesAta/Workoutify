@@ -6,13 +6,13 @@
   <h4 class="blue-text darken-2">{{ workout.location }}</h4>
   </div>
   <div class="col s2 right workout-options">
-    <a class="btn blue darken-2 right" href="{% url 'workouts_delete' workout.id %}">Delete</a>
-    <a class="btn blue darken-2 right" href="{% url 'workouts_update' workout.id %}">Edit</a>
+    <a id="delete-workout-btn" class="btn blue darken-2 right" href="{% url 'workouts_delete' workout.id %}">Delete</a>
+    <a id="edit-workout-btn" class="btn blue darken-2 right" href="{% url 'workouts_update' workout.id %}">Edit</a>
   </div>
 </div>
 
 <div class="row">
-<div class="col s12 m6">
+<div class="col s12 m5">
     <form id="scheduleFormAdd" method="post" data-url="{% url 'add_schedule' workout.id %}">
       {% csrf_token %}
       {{ schedule_form.as_p }}
@@ -20,7 +20,7 @@
     </form>
     <br>
   </div>
-    <div class="col s12 m6">
+    <div class="col s12 m7">
     <table class="striped">
       <thead>
         <tr><th class="center">Date</th></tr>
@@ -28,7 +28,7 @@
       <tbody id="scheduleTableBody">
         {% for schedule in workout.schedules.all %}
           <tr id="schedRow" data-id="{{ schedule.id }}">
-            <td class="center">{{schedule.date}} - {{schedule.time}}</td>
+            <td class="center">{{schedule.date | date:"D, M. d, Y"}} - {{schedule.time}}</td>
             <td>
               <button id="scheduleRemove" type="submit" class="btn-floating btn-small blue lighten-1" data-id="{{ schedule.id }}"><i class="material-icons">close</i></button>
             </td>

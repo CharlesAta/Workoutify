@@ -305,6 +305,8 @@ function timeToString(time) {
   let pauseButton = document.getElementById("pauseButton");
   let resetButton = document.getElementById("resetButton");
   
-  playButton.addEventListener("click", start);
-  pauseButton.addEventListener("click", pause);
-  resetButton.addEventListener("click", reset);
+  if (playButton || pauseButton || resetButton) {
+    playButton.addEventListener("click", start);
+    pauseButton.addEventListener("click", pause);
+    resetButton.addEventListener("click", reset);
+  }
