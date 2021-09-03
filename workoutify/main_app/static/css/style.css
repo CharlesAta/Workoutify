@@ -138,3 +138,24 @@ ul {
 #weather-card label {
   color: white;
 }
+.card-form label {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.card-form input,
+.card-form textarea {
+  color: darkblue;
+}
+
+.dropdown-content li > span {
+  color: darkblue;
+}
+
+.select-wrapper input.select-dropdown:focus {
+  border-color: white;
+}
+
+#weather-card label {
+  color: white;
+}
