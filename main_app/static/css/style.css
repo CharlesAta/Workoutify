@@ -159,3 +159,12 @@ ul {
 #weather-card label {
   color: white;
 }
+
+@media screen and (max-width: 480px) {
+  h1#workout {
+    font-size: 2em;
+  }
+  h1#workout + h4 {
+    font-size: 1.5em;
+  }
+}
