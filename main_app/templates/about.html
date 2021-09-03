@@ -70,11 +70,18 @@
 
 <hr />
 <br />
+
 <div class="row">
   <div class="col s12 center">
+    {% if user.is_authenticated %}
+    <a href="{% url 'home' %}"
+      ><h3><strong>GET STARTED</strong></h3></a
+    >
+    {% else %}
     <a href="{% url 'signup' %}"
       ><h3><strong>SIGN UP TODAY</strong></h3></a
     >
+    {% endif %}
   </div>
 </div>
 {% endblock %}

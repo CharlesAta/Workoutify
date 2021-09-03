@@ -1,11 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 
 <h1 class="blue-text darken-2">All Exercises</h1>
-{% if exercise_list %}
-{% for exercise in exercise_list %}
+{% if exercise_list %} {% for exercise in exercise_list %}
 
 <a href="{% url 'exercises_detail' exercise.id %}">
-  <div class="card blue-grey lighten-1">
+  <div class="card z-depth-1 hoverable blue-grey lighten-1">
     <div class="card-content white-text">
       <span class="card-title amber-text text-accent-2"
         >{{ exercise.name }}</span

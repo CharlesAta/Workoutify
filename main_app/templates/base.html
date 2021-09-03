@@ -47,6 +47,7 @@
                 <ul class="right hide-on-med-and-down">
                   <li><a href="{% url 'about' %}">About</a></li>
                   {% if user.is_authenticated %}
+                  <li><a href="{% url 'home' %}"><i class="material-icons">home</i></a></li>
                   <li><a href="{% url 'exercises_create' %}">Create Exercise</a></li>
                   <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
                   <li><a href="{% url 'workouts_create' %}">Create Workout</a></li>
@@ -65,6 +66,7 @@
           <ul class="sidenav" id="mobile-demo">
             <li><a href="{% url 'about' %}">About</a></li>
               {% if user.is_authenticated %}
+              <li><a href="{% url 'home' %}">Home</a></li>
               <li><a href="{% url 'exercises_create' %}">Create Exercise</a></li>
               <li><a href="{% url 'exercises_index' %}">All Exercises</a></li>
               <li><a href="{% url 'workouts_create' %}">Create Workout</a></li>
