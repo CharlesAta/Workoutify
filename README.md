@@ -39,13 +39,7 @@ Ever want to know the weather before you head out to get SWOLE? Stay dry with Wo
 
 ## :athletic_shoe: Getting Started 
 
-### [Workoutify](https://workoutify.herokuapp.com/)
-
-### [Trello Board](https://trello.com/b/8JJgmE3C/workoutify)
-
-### [Lucid Chart - ERD](https://lucid.app/lucidchart/db7be31a-2432-4d29-9255-27e14ef8049d/edit?page=0_0#)
-
-### [Draw.io - WireFrame](https://app.diagrams.net/#G1j6oLd_Kca7tNAx-VhCn5-cbjrm8DgAvf)
+### [Workoutify](https://workoutify-c06770e56610.herokuapp.com/about/)
 
 ## :climbing: Future Enhancements
 
