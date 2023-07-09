@@ -85,7 +85,11 @@ WSGI_APPLICATION = 'workoutify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'workoutify',
+        'NAME': os.environ.get('NAME'),
+        'USER': os.environ.get('USERNAME'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('HOSTNAME'),
+        'PORT': os.environ.get('PORT')
     }
 }
 
